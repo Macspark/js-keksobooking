@@ -19,8 +19,6 @@ var TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
-var offerList = [];
-
 var generateAvatar = function (number) {
   number = number + 1;
   number = (number < 10 ? '0' : '') + number;
@@ -83,17 +81,27 @@ var pinTemplate = document.querySelector('#pin').content.querySelector('button')
 var fragment = document.createDocumentFragment();
 var mapPins = document.querySelector('.map__pins');
 
-for (var i = 0; i < 8; i++) {
-  var newElement = generateElement(i);
-  offerList.push(newElement);
+var generateOffers = function (amount) {
+  var tempArr = [];
+  for (var i = 0; i < amount; i++) {
+    tempArr.push(generateElement(i));
+  }
+  return tempArr;
+};
 
+var generatePin = function (elem) {
   var pin = pinTemplate.cloneNode(true);
   var pinImg = pin.querySelector('img');
-  pin.style.left = newElement.location.x + PIN_OFFSET_X + 'px';
-  pin.style.top = newElement.location.y + PIN_OFFSET_Y + 'px';
-  pinImg.src = newElement.author.avatar;
-  pinImg.alt = newElement.offer.description;
+  pin.style.left = elem.location.x + PIN_OFFSET_X + 'px';
+  pin.style.top = elem.location.y + PIN_OFFSET_Y + 'px';
+  pinImg.src = elem.author.avatar;
+  pinImg.alt = elem.offer.description;
   fragment.appendChild(pin);
-}
+};
+
+var offerList = generateOffers(8);
+offerList.forEach(function (elem) {
+  generatePin(elem);
+});
 
 mapPins.appendChild(fragment);
