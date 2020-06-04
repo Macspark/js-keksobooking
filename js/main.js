@@ -12,6 +12,12 @@ var MIN_GUESTS = 0;
 var MAX_GUESTS = 4;
 var PIN_OFFSET_X = -25;
 var PIN_OFFSET_Y = -70;
+var TITLES = ['Название 1', 'Название 2', 'Название 3', 'Название 4', 'Название 5', 'Название 6', 'Название 7', 'Название 8'];
+var DESCRIPTIONS = ['Описание 1', 'Описание 2', 'Описание 3', 'Описание 4', 'Описание 5', 'Описание 6', 'Описание 7', 'Описание 8'];
+var TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var TIMES = ['12:00', '13:00', '14:00'];
+var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
 var offerList = [];
 
@@ -19,6 +25,10 @@ var generateAvatar = function (number) {
   number = number + 1;
   number = (number < 10 ? '0' : '') + number;
   return 'img/avatars/user' + number + '.png';
+};
+
+var generateAddress = function (locationXY) {
+  return locationXY.x + ', ' + locationXY.y;
 };
 
 var getRandomNumber = function (min, max) {
@@ -29,49 +39,16 @@ var getRandomElement = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 };
 
-var generateAddress = function (locationXY) {
-  return locationXY.x + ', ' + locationXY.y;
-};
-
 var getRandomArray = function (list) {
+  var tempArr = list.slice();
   var randomArr = [];
-  var arrLength = getRandomNumber(0, list.length);
+  var arrLength = getRandomNumber(0, tempArr.length);
   for (var i = 0; i < arrLength; i++) {
-    var randomElem = getRandomElement(list);
+    var randomElem = getRandomElement(tempArr);
     randomArr.push(randomElem);
-    list.splice(list.indexOf(randomElem), 1);
+    tempArr.splice(tempArr.indexOf(randomElem), 1);
   }
   return randomArr;
-};
-
-var generateTitle = function (i) {
-  var titleList = ['Название 1', 'Название 2', 'Название 3', 'Название 4', 'Название 5', 'Название 6', 'Название 7', 'Название 8'];
-  return titleList[i];
-};
-
-var generateType = function () {
-  var typesList = ['palace', 'flat', 'house', 'bungalo'];
-  return getRandomElement(typesList);
-};
-
-var generateChecks = function () {
-  var checkinsList = ['12:00', '13:00', '14:00'];
-  return getRandomElement(checkinsList);
-};
-
-var generateFeatures = function () {
-  var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-  return getRandomArray(features);
-};
-
-var generateDescription = function (i) {
-  var descList = ['Описание 1', 'Описание 2', 'Описание 3', 'Описание 4', 'Описание 5', 'Описание 6', 'Описание 7', 'Описание 8'];
-  return descList[i];
-};
-
-var generatePhotos = function () {
-  var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-  return getRandomArray(photos);
 };
 
 var generateElement = function (i) {
@@ -85,17 +62,17 @@ var generateElement = function (i) {
     },
     location: locationXY,
     offer: {
-      title: generateTitle(i),
+      title: TITLES[i],
       address: generateAddress(locationXY),
       price: getRandomNumber(MIN_PRICE, MAX_PRICE),
-      type: generateType(),
+      type: getRandomElement(TYPES),
       rooms: getRandomNumber(MIN_ROOMS, MAX_ROOMS),
       guests: getRandomNumber(MIN_GUESTS, MAX_GUESTS),
-      checkin: generateChecks(),
-      checkout: generateChecks(),
-      features: generateFeatures(),
-      description: generateDescription(i),
-      photos: generatePhotos()
+      checkin: getRandomElement(TIMES),
+      checkout: getRandomElement(TIMES),
+      features: getRandomArray(FEATURES),
+      description: DESCRIPTIONS[i],
+      photos: getRandomArray(PHOTOS)
     }
   };
 };
