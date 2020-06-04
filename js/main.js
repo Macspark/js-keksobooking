@@ -1,5 +1,6 @@
 'use strict';
 
+var OFFERS_AMOUNT = 8;
 var MIN_X = 0;
 var MAX_X = document.querySelector('.map__pins').offsetWidth;
 var MIN_Y = 130;
@@ -99,7 +100,7 @@ var generatePin = function (elem) {
   fragment.appendChild(pin);
 };
 
-var offerList = generateOffers(8);
+var offerList = generateOffers(OFFERS_AMOUNT);
 offerList.forEach(function (elem) {
   generatePin(elem);
 });
