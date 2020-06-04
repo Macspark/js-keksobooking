@@ -178,9 +178,10 @@ var generateCard = function (elem) {
 };
 
 var offerList = generateOffers(OFFERS_AMOUNT);
+
 offerList.forEach(function (elem) {
   generatePin(elem);
 });
-generateCard(offerList[CURRENT_OFFER]);
-
 mapPins.appendChild(pins);
+
+generateCard(offerList[CURRENT_OFFER]);
