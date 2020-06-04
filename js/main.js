@@ -9,9 +9,9 @@ var MAX_Y = 630;
 var MIN_PRICE = 1000;
 var MAX_PRICE = 100000;
 var MIN_ROOMS = 1;
-var MAX_ROOMS = 3;
+var MAX_ROOMS = 100;
 var MIN_GUESTS = 1;
-var MAX_GUESTS = 3;
+var MAX_GUESTS = 100;
 var PIN_OFFSET_X = -25;
 var PIN_OFFSET_Y = -70;
 var MIN_FEATURES = 1;
@@ -32,6 +32,29 @@ var cards = document.createDocumentFragment();
 var map = document.querySelector('.map');
 var mapFiltersContainer = document.querySelector('.map__filters-container');
 
+var getRandomNumber = function (min, max) {
+  return Math.floor(min + Math.random() * (max + 1 - min));
+};
+
+var getRandomElement = function (arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+};
+
+var getDeclinedNumber = function (n, words) {
+  n = Math.abs(n) % 100;
+  var n1 = n % 10;
+  switch (true) {
+    case (n > 10 && n < 20):
+      return words[2];
+    case (n1 > 1 && n1 < 5):
+      return words[1];
+    case (n1 === 1):
+      return words[0];
+    default:
+      return words[2];
+  }
+};
+
 var generateAvatar = function (number) {
   number = number + 1;
   number = (number < 10 ? '0' : '') + number;
@@ -40,14 +63,6 @@ var generateAvatar = function (number) {
 
 var generateAddress = function (locationXY) {
   return locationXY.x + ', ' + locationXY.y;
-};
-
-var getRandomNumber = function (min, max) {
-  return Math.floor(min + Math.random() * (max + 1 - min));
-};
-
-var getRandomElement = function (arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
 };
 
 var getRandomArray = function (list, min) {
@@ -118,13 +133,13 @@ var translateSimpleInfo = function (elem, container) {
 };
 
 var translatePrice = function (elem, container) {
-  hideNullElement(elem.offer.price, container);
-  return elem.offer.price + '₽/ночь';
+  hideNullElement(elem, container);
+  return elem + '₽/ночь';
 };
 
 var translateType = function (elem, container) {
-  hideNullElement(elem.offer.type, container);
-  switch (elem.offer.type) {
+  hideNullElement(elem, container);
+  switch (elem) {
     case 'flat':
       return 'Квартира';
     case 'bungalo':
@@ -138,37 +153,33 @@ var translateType = function (elem, container) {
   }
 };
 
-var translateCapacity = function (elem, container) {
-  hideNullElement(elem.offer.rooms && elem.offer.guests, container);
-  var rooms = elem.offer.rooms;
-  var guests = elem.offer.guests;
-  rooms = rooms === 1 ? rooms + ' комната' : rooms + ' комнаты';
-  guests = guests === 1 ? guests + ' гостя' : guests + ' гостей';
-  return rooms + ' для ' + guests;
+var translateCapacity = function (elem1, elem2, container) {
+  hideNullElement(elem1 && elem2, container);
+  return elem1 + ' ' + getDeclinedNumber(elem1, ['комната', 'комнаты', 'комнат']) + ' для ' + elem2 + ' ' + getDeclinedNumber(elem2, ['гостя', 'гостей', 'гостей']);
 };
 
-var translateTime = function (elem, container) {
-  hideNullElement(elem.offer.checkin && elem.offer.checkout, container);
-  return 'Заезд после ' + elem.offer.checkin + ', выезд до ' + elem.offer.checkout;
+var translateTime = function (elem1, elem2, container) {
+  hideNullElement(elem1 && elem2, container);
+  return 'Заезд после ' + elem1 + ', выезд до ' + elem2;
 };
 
-var translateFeatures = function (card, elem, container) {
-  hideNullElement(elem.offer.features, container);
+var translateFeatures = function (elem, card, container) {
+  hideNullElement(elem, container);
 
   var features = card.querySelectorAll('.popup__feature');
   features.forEach(function (e) {
     e.classList.add('hidden');
   });
 
-  elem.offer.features.forEach(function (e) {
+  elem.forEach(function (e) {
     card.querySelector('.popup__feature--' + e).classList.remove('hidden');
   });
 };
 
-var translatePhotos = function (card, elem, container) {
-  hideNullElement(elem.offer.photos, container);
+var translatePhotos = function (elem, card, container) {
+  hideNullElement(elem, container);
   card.querySelector('.popup__photo').classList.add('hidden');
-  elem.offer.photos.forEach(function (e) {
+  elem.forEach(function (e) {
     var photo = card.querySelector('.popup__photo').cloneNode(true);
     photo.src = e;
     photo.classList.remove('hidden');
@@ -180,13 +191,13 @@ var generateCard = function (elem) {
   var card = cardTemplate.cloneNode(true);
   card.querySelector('.popup__title').textContent = translateSimpleInfo(elem.offer.title, card.querySelector('.popup__title'));
   card.querySelector('.popup__text--address').textContent = translateSimpleInfo(elem.offer.address, card.querySelector('.popup__text--address'));
-  card.querySelector('.popup__text--price').textContent = translatePrice(elem, card.querySelector('.popup__text--price'));
-  card.querySelector('.popup__type').textContent = translateType(elem, card.querySelector('.popup__type'));
-  card.querySelector('.popup__text--capacity').textContent = translateCapacity(elem, card.querySelector('.popup__text--capacity'));
-  card.querySelector('.popup__text--time').textContent = translateTime(elem, card.querySelector('.popup__text--time'));
-  translateFeatures(card, elem, card.querySelector('.popup__features'));
+  card.querySelector('.popup__text--price').textContent = translatePrice(elem.offer.price, card.querySelector('.popup__text--price'));
+  card.querySelector('.popup__type').textContent = translateType(elem.offer.type, card.querySelector('.popup__type'));
+  card.querySelector('.popup__text--capacity').textContent = translateCapacity(elem.offer.rooms, elem.offer.guests, card.querySelector('.popup__text--capacity'));
+  card.querySelector('.popup__text--time').textContent = translateTime(elem.offer.checkin, elem.offer.checkout, card.querySelector('.popup__text--time'));
+  translateFeatures(elem.offer.features, card, card.querySelector('.popup__features'));
   card.querySelector('.popup__description').textContent = translateSimpleInfo(elem.offer.description, card.querySelector('.popup__description'));
-  translatePhotos(card, elem, card.querySelector('.popup__photos'));
+  translatePhotos(elem.offer.photos, card, card.querySelector('.popup__photos'));
   card.querySelector('.popup__avatar').src = translateSimpleInfo(elem.author.avatar, card.querySelector('.popup__avatar'));
 
   cards.appendChild(card);
