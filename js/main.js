@@ -178,9 +178,10 @@ var transformFeatures = function (elem, card, container) {
 
 var transformPhotos = function (elem, card, container) {
   hideNullElement(elem, container);
-  card.querySelector('.popup__photo').classList.add('hidden');
+  var popupPhoto = card.querySelector('.popup__photo');
+  popupPhoto.classList.add('hidden');
   elem.forEach(function (e) {
-    var photo = card.querySelector('.popup__photo').cloneNode(true);
+    var photo = popupPhoto.cloneNode(true);
     photo.src = e;
     photo.classList.remove('hidden');
     container.appendChild(photo);
@@ -189,16 +190,27 @@ var transformPhotos = function (elem, card, container) {
 
 var generateCard = function (elem) {
   var card = cardTemplate.cloneNode(true);
-  card.querySelector('.popup__title').textContent = transformSimpleInfo(elem.offer.title, card.querySelector('.popup__title'));
-  card.querySelector('.popup__text--address').textContent = transformSimpleInfo(elem.offer.address, card.querySelector('.popup__text--address'));
-  card.querySelector('.popup__text--price').textContent = transformPrice(elem.offer.price, card.querySelector('.popup__text--price'));
-  card.querySelector('.popup__type').textContent = transformType(elem.offer.type, card.querySelector('.popup__type'));
-  card.querySelector('.popup__text--capacity').textContent = transformCapacity(elem.offer.rooms, elem.offer.guests, card.querySelector('.popup__text--capacity'));
-  card.querySelector('.popup__text--time').textContent = transformTime(elem.offer.checkin, elem.offer.checkout, card.querySelector('.popup__text--time'));
-  transformFeatures(elem.offer.features, card, card.querySelector('.popup__features'));
-  card.querySelector('.popup__description').textContent = transformSimpleInfo(elem.offer.description, card.querySelector('.popup__description'));
-  transformPhotos(elem.offer.photos, card, card.querySelector('.popup__photos'));
-  card.querySelector('.popup__avatar').src = transformSimpleInfo(elem.author.avatar, card.querySelector('.popup__avatar'));
+  var popupTitle = card.querySelector('.popup__title');
+  var popupAddress = card.querySelector('.popup__text--address');
+  var popupPrice = card.querySelector('.popup__text--price');
+  var popupType = card.querySelector('.popup__type');
+  var popupCapacity = card.querySelector('.popup__text--capacity');
+  var popupTime = card.querySelector('.popup__text--time');
+  var popupFeatures = card.querySelector('.popup__features');
+  var popupDescription = card.querySelector('.popup__description');
+  var popupPhotos = card.querySelector('.popup__photos');
+  var popupAvatar = card.querySelector('.popup__avatar');
+
+  popupTitle.textContent = transformSimpleInfo(elem.offer.title, popupTitle);
+  popupAddress.textContent = transformSimpleInfo(elem.offer.address, popupAddress);
+  popupPrice.textContent = transformPrice(elem.offer.price, popupPrice);
+  popupType.textContent = transformType(elem.offer.type, popupType);
+  popupCapacity.textContent = transformCapacity(elem.offer.rooms, elem.offer.guests, popupCapacity);
+  popupTime.textContent = transformTime(elem.offer.checkin, elem.offer.checkout, popupTime);
+  transformFeatures(elem.offer.features, card, popupFeatures);
+  popupDescription.textContent = transformSimpleInfo(elem.offer.description, popupDescription);
+  transformPhotos(elem.offer.photos, card, popupPhotos);
+  popupAvatar.src = transformSimpleInfo(elem.author.avatar, popupAvatar);
 
   cards.appendChild(card);
   map.insertBefore(cards, mapFiltersContainer);
