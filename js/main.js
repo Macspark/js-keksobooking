@@ -46,7 +46,7 @@ var filterPrice = document.querySelector('#price');
 var filterType = document.querySelector('#type');
 var filterTimein = document.querySelector('#timein');
 var filterTimeout = document.querySelector('#timeout');
-var filterRooms = document.querySelector('#rooms');
+var filterRooms = document.querySelector('#room_number');
 var filterGuests = document.querySelector('#capacity');
 
 var getRandomNumber = function (min, max) {
@@ -250,17 +250,6 @@ var enableElements = function (elem) {
   });
 };
 
-var setInactiveState = function () {
-  adForm.classList.add('ad-form--disabled');
-  disableElements(adFormFieldsets);
-
-  mapFilters.classList.add('map__filters--disabled');
-  disableElements(mapFiltersSelects);
-  disableElements(mapFiltersInputs);
-
-  setAddress();
-};
-
 var setActiveState = function () {
   adForm.classList.remove('ad-form--disabled');
   enableElements(adFormFieldsets);
@@ -271,6 +260,24 @@ var setActiveState = function () {
   document.querySelector('.map').classList.remove('map--faded');
 
   mapPins.appendChild(pins);
+  generateCard(offerList[0]);
+};
+
+var compareRoomsAndGuests = function () {
+  switch (true) {
+    case (filterRooms.value === '100' && filterGuests.value !== '0'):
+      filterGuests.setCustomValidity('Указанное количество комнат не для гостей');
+      break;
+    case (filterRooms.value < filterGuests.value):
+      filterGuests.setCustomValidity('Для текущего количества комнат гостей может быть не больше ' + filterRooms.value);
+      break;
+    case (filterRooms.value !== '100' && filterGuests.value === '0'):
+      filterGuests.setCustomValidity('Текущее количество комнат подразумевает минимум 1 гостя');
+      break;
+    default:
+      filterGuests.setCustomValidity('');
+      break;
+  }
 };
 
 mapPinMain.addEventListener('mousedown', function (evt) {
@@ -315,9 +322,23 @@ filterTimeout.addEventListener('change', function () {
   filterTimein.value = filterTimeout.value;
 });
 
+filterRooms.addEventListener('change', function () {
+  compareRoomsAndGuests();
+});
+
+filterGuests.addEventListener('change', function () {
+  compareRoomsAndGuests();
+});
+
 var offerList = generateOffers(OFFERS_AMOUNT);
 offerList.forEach(function (elem) {
   generatePin(elem);
 });
 
-setInactiveState();
+adForm.classList.add('ad-form--disabled');
+disableElements(adFormFieldsets);
+mapFilters.classList.add('map__filters--disabled');
+disableElements(mapFiltersSelects);
+disableElements(mapFiltersInputs);
+setAddress();
+compareRoomsAndGuests();
