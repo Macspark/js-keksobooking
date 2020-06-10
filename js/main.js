@@ -49,6 +49,8 @@ var filterTimeout = document.querySelector('#timeout');
 var filterRooms = document.querySelector('#room_number');
 var filterGuests = document.querySelector('#capacity');
 
+var address = document.querySelector('#address');
+
 var getRandomNumber = function (min, max) {
   return Math.floor(min + Math.random() * (max + 1 - min));
 };
@@ -234,7 +236,6 @@ var generateCard = function (elem) {
 };
 
 var setAddress = function () {
-  var address = document.querySelector('#address');
   address.value = mapPinMainX + ', ' + mapPinMainY;
 };
 
@@ -335,6 +336,7 @@ offerList.forEach(function (elem) {
   generatePin(elem);
 });
 
+address.setAttribute('readonly', true);
 adForm.classList.add('ad-form--disabled');
 disableElements(adFormFieldsets);
 mapFilters.classList.add('map__filters--disabled');
