@@ -1,7 +1,6 @@
 'use strict';
 
 var OFFERS_AMOUNT = 8;
-var CURRENT_OFFER = 0;
 var MIN_X = 0;
 var MAX_X = document.querySelector('.map__pins').offsetWidth;
 var MIN_Y = 130;
@@ -31,6 +30,24 @@ var cardTemplate = document.querySelector('#card').content.querySelector('articl
 var cards = document.createDocumentFragment();
 var map = document.querySelector('.map');
 var mapFiltersContainer = document.querySelector('.map__filters-container');
+
+var adForm = document.querySelector('.ad-form');
+var adFormFieldsets = document.querySelectorAll('.ad-form fieldset');
+
+var mapFilters = document.querySelector('.map__filters');
+var mapFiltersSelects = document.querySelectorAll('.map__filters select');
+var mapFiltersInputs = document.querySelectorAll('.map__filters input');
+
+var mapPinMain = document.querySelector('.map__pin--main');
+var mapPinMainX = mapPinMain.style.left.replace('px', '');
+var mapPinMainY = mapPinMain.style.top.replace('px', '');
+
+var filterPrice = document.querySelector('#price');
+var filterType = document.querySelector('#type');
+var filterTimein = document.querySelector('#timein');
+var filterTimeout = document.querySelector('#timeout');
+var filterRooms = document.querySelector('#rooms');
+var filterGuests = document.querySelector('#capacity');
 
 var getRandomNumber = function (min, max) {
   return Math.floor(min + Math.random() * (max + 1 - min));
@@ -216,13 +233,91 @@ var generateCard = function (elem) {
   map.insertBefore(cards, mapFiltersContainer);
 };
 
-var offerList = generateOffers(OFFERS_AMOUNT);
+var setAddress = function () {
+  var address = document.querySelector('#address');
+  address.value = mapPinMainX + ', ' + mapPinMainY;
+};
 
+var disableElements = function (elem) {
+  elem.forEach(function (e) {
+    e.setAttribute('disabled', true);
+  });
+};
+
+var enableElements = function (elem) {
+  elem.forEach(function (e) {
+    e.removeAttribute('disabled');
+  });
+};
+
+var setInactiveState = function () {
+  adForm.classList.add('ad-form--disabled');
+  disableElements(adFormFieldsets);
+
+  mapFilters.classList.add('map__filters--disabled');
+  disableElements(mapFiltersSelects);
+  disableElements(mapFiltersInputs);
+
+  setAddress();
+};
+
+var setActiveState = function () {
+  adForm.classList.remove('ad-form--disabled');
+  enableElements(adFormFieldsets);
+  mapFilters.classList.remove('map__filters--disabled');
+  enableElements(mapFiltersSelects);
+  enableElements(mapFiltersInputs);
+
+  document.querySelector('.map').classList.remove('map--faded');
+
+  mapPins.appendChild(pins);
+};
+
+mapPinMain.addEventListener('mousedown', function (evt) {
+  if (evt.button === 0) {
+    setActiveState();
+  }
+});
+mapPinMain.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    setActiveState();
+  }
+});
+
+filterType.addEventListener('change', function () {
+  var price;
+  switch (filterType.value) {
+    case 'flat':
+      price = 1000;
+      break;
+    case 'bungalo':
+      price = 0;
+      break;
+    case 'house':
+      price = 5000;
+      break;
+    case 'palace':
+      price = 10000;
+      break;
+    default:
+      price = 1000;
+      break;
+  }
+  filterPrice.min = price;
+  filterPrice.placeholder = price * 5;
+});
+
+filterTimein.addEventListener('change', function () {
+  filterTimeout.value = filterTimein.value;
+});
+
+filterTimeout.addEventListener('change', function () {
+  filterTimein.value = filterTimeout.value;
+});
+
+var offerList = generateOffers(OFFERS_AMOUNT);
 offerList.forEach(function (elem) {
   generatePin(elem);
 });
-mapPins.appendChild(pins);
 
-generateCard(offerList[CURRENT_OFFER]);
-
-document.querySelector('.map').classList.remove('map--faded');
+setInactiveState();
