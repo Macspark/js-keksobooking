@@ -42,12 +42,12 @@ var mapPinMain = document.querySelector('.map__pin--main');
 var mapPinMainX = mapPinMain.style.left.replace('px', '');
 var mapPinMainY = mapPinMain.style.top.replace('px', '');
 
-var filterPrice = document.querySelector('#price');
-var filterType = document.querySelector('#type');
-var filterTimein = document.querySelector('#timein');
-var filterTimeout = document.querySelector('#timeout');
-var filterRooms = document.querySelector('#room_number');
-var filterGuests = document.querySelector('#capacity');
+var adPrice = document.querySelector('#price');
+var adType = document.querySelector('#type');
+var adTimein = document.querySelector('#timein');
+var adTimeout = document.querySelector('#timeout');
+var adRooms = document.querySelector('#room_number');
+var adGuests = document.querySelector('#capacity');
 
 var address = document.querySelector('#address');
 
@@ -266,17 +266,17 @@ var setActiveState = function () {
 
 var compareRoomsAndGuests = function () {
   switch (true) {
-    case (filterRooms.value === '100' && filterGuests.value !== '0'):
-      filterGuests.setCustomValidity('Указанное количество комнат не для гостей');
+    case (adRooms.value === '100' && adGuests.value !== '0'):
+      adGuests.setCustomValidity('Указанное количество комнат не для гостей');
       break;
-    case (filterRooms.value < filterGuests.value):
-      filterGuests.setCustomValidity('Для текущего количества комнат гостей может быть не больше ' + filterRooms.value);
+    case (adRooms.value < adGuests.value):
+      adGuests.setCustomValidity('Для текущего количества комнат гостей может быть не больше ' + adRooms.value);
       break;
-    case (filterRooms.value !== '100' && filterGuests.value === '0'):
-      filterGuests.setCustomValidity('Текущее количество комнат подразумевает минимум 1 гостя');
+    case (adRooms.value !== '100' && adGuests.value === '0'):
+      adGuests.setCustomValidity('Текущее количество комнат подразумевает минимум 1 гостя');
       break;
     default:
-      filterGuests.setCustomValidity('');
+      adGuests.setCustomValidity('');
       break;
   }
 };
@@ -292,14 +292,14 @@ mapPinMain.addEventListener('keydown', function (evt) {
   }
 });
 
-filterType.addEventListener('change', function () {
+adType.addEventListener('change', function () {
   var price;
-  switch (filterType.value) {
-    case 'flat':
-      price = 1000;
-      break;
+  switch (adType.value) {
     case 'bungalo':
       price = 0;
+      break;
+    case 'flat':
+      price = 1000;
       break;
     case 'house':
       price = 5000;
@@ -311,23 +311,23 @@ filterType.addEventListener('change', function () {
       price = 1000;
       break;
   }
-  filterPrice.min = price;
-  filterPrice.placeholder = price * 5;
+  adPrice.min = price;
+  adPrice.placeholder = price * 5;
 });
 
-filterTimein.addEventListener('change', function () {
-  filterTimeout.value = filterTimein.value;
+adTimein.addEventListener('change', function () {
+  adTimeout.value = adTimein.value;
 });
 
-filterTimeout.addEventListener('change', function () {
-  filterTimein.value = filterTimeout.value;
+adTimeout.addEventListener('change', function () {
+  adTimein.value = adTimeout.value;
 });
 
-filterRooms.addEventListener('change', function () {
+adRooms.addEventListener('change', function () {
   compareRoomsAndGuests();
 });
 
-filterGuests.addEventListener('change', function () {
+adGuests.addEventListener('change', function () {
   compareRoomsAndGuests();
 });
 
