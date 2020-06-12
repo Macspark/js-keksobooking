@@ -23,11 +23,11 @@ var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditio
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
 var pinTemplate = document.querySelector('#pin').content.querySelector('button');
-var pins = document.createDocumentFragment();
+var pinFragment = document.createDocumentFragment();
 var mapPins = document.querySelector('.map__pins');
 
 var cardTemplate = document.querySelector('#card').content.querySelector('article');
-var cards = document.createDocumentFragment();
+var cardFragment = document.createDocumentFragment();
 var map = document.querySelector('.map');
 var mapFiltersContainer = document.querySelector('.map__filters-container');
 
@@ -137,7 +137,7 @@ var generatePin = function (elem) {
   pin.style.top = elem.location.y + PIN_OFFSET_Y + 'px';
   pinImg.src = elem.author.avatar;
   pinImg.alt = elem.offer.description;
-  pins.appendChild(pin);
+  pinFragment.appendChild(pin);
 };
 
 var hideNullElement = function (elem, container) {
@@ -231,8 +231,8 @@ var generateCard = function (elem) {
   transformPhotos(elem.offer.photos, card, popupPhotos);
   popupAvatar.src = transformSimpleInfo(elem.author.avatar, popupAvatar);
 
-  cards.appendChild(card);
-  map.insertBefore(cards, mapFiltersContainer);
+  cardFragment.appendChild(card);
+  map.insertBefore(cardFragment, mapFiltersContainer);
 };
 
 var setAddress = function () {
@@ -260,7 +260,7 @@ var setActiveState = function () {
 
   document.querySelector('.map').classList.remove('map--faded');
 
-  mapPins.appendChild(pins);
+  mapPins.appendChild(pinFragment);
   generateCard(offerList[0]);
 };
 
