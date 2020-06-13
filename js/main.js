@@ -240,10 +240,10 @@ var generateCard = function (elem) {
 var setAddress = function () {
   var x = parseInt(mapPinMain.style.left, 10);
   var y = parseInt(mapPinMain.style.top, 10);
-  var cx = Math.floor(mapPinMain.offsetWidth / 2);
-  var cy = Math.floor(mapPinMain.offsetHeight / 2);
 
   if (map.classList.contains('map--faded')) {
+    var cx = Math.floor(mapPinMain.offsetWidth / 2);
+    var cy = Math.floor(mapPinMain.offsetHeight / 2);
     x = x + cx;
     y = y + cy;
   } else {
