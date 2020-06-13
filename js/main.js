@@ -346,8 +346,7 @@ adGuests.addEventListener('change', function () {
 });
 
 document.addEventListener('keydown', function (evt) {
-  var card = document.querySelector('.map .popup');
-  if (evt.key === 'Escape' && (card)) {
+  if (evt.key === 'Escape') {
     removeOldCard();
   }
 });
