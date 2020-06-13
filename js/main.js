@@ -13,6 +13,8 @@ var MIN_GUESTS = 1;
 var MAX_GUESTS = 100;
 var PIN_OFFSET_X = -25;
 var PIN_OFFSET_Y = -70;
+var MAIN_PIN_OFFSET_X = 32;
+var MAIN_PIN_OFFSET_Y = 80;
 var MIN_FEATURES = 1;
 var MIN_PHOTOS = 1;
 var TITLES = ['Название 1', 'Название 2', 'Название 3', 'Название 4', 'Название 5', 'Название 6', 'Название 7', 'Название 8'];
@@ -39,8 +41,6 @@ var mapFiltersSelects = document.querySelectorAll('.map__filters select');
 var mapFiltersInputs = document.querySelectorAll('.map__filters input');
 
 var mapPinMain = document.querySelector('.map__pin--main');
-var mapPinMainX = mapPinMain.style.left.replace('px', '');
-var mapPinMainY = mapPinMain.style.top.replace('px', '');
 
 var adPrice = document.querySelector('#price');
 var adType = document.querySelector('#type');
@@ -238,7 +238,19 @@ var generateCard = function (elem) {
 };
 
 var setAddress = function () {
-  address.value = mapPinMainX + ', ' + mapPinMainY;
+  var x = parseInt(mapPinMain.style.left, 10);
+  var y = parseInt(mapPinMain.style.top, 10);
+  var cx = Math.floor(mapPinMain.offsetWidth / 2);
+  var cy = Math.floor(mapPinMain.offsetHeight / 2);
+
+  if (map.classList.contains('map--faded')) {
+    x = x + cx;
+    y = y + cy;
+  } else {
+    x = x + MAIN_PIN_OFFSET_X;
+    y = y + MAIN_PIN_OFFSET_Y;
+  }
+  address.value = x + ', ' + y;
 };
 
 var disableElements = function (elem) {
@@ -276,6 +288,8 @@ var setActiveState = function () {
 
   document.querySelector('.map').classList.remove('map--faded');
   mapPins.appendChild(pinFragment);
+
+  setAddress();
 };
 
 var compareRoomsAndGuests = function () {
