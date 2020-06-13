@@ -130,16 +130,6 @@ var generateOffers = function (amount) {
   return tempArr;
 };
 
-var generatePin = function (elem) {
-  var pin = pinTemplate.cloneNode(true);
-  var pinImg = pin.querySelector('img');
-  pin.style.left = elem.location.x + PIN_OFFSET_X + 'px';
-  pin.style.top = elem.location.y + PIN_OFFSET_Y + 'px';
-  pinImg.src = elem.author.avatar;
-  pinImg.alt = elem.offer.description;
-  pinFragment.appendChild(pin);
-};
-
 var hideNullElement = function (elem, container) {
   if (!elem) {
     container.classList.add('hidden');
@@ -207,6 +197,13 @@ var transformPhotos = function (elem, card, container) {
   });
 };
 
+var removeOldCard = function () {
+  var card = document.querySelector('.map .popup');
+  if (card) {
+    map.removeChild(card);
+  }
+};
+
 var generateCard = function (elem) {
   var card = cardTemplate.cloneNode(true);
   var popupTitle = card.querySelector('.popup__title');
@@ -219,6 +216,7 @@ var generateCard = function (elem) {
   var popupDescription = card.querySelector('.popup__description');
   var popupPhotos = card.querySelector('.popup__photos');
   var popupAvatar = card.querySelector('.popup__avatar');
+  var popupClose = card.querySelector('.popup__close');
 
   popupTitle.textContent = transformSimpleInfo(elem.offer.title, popupTitle);
   popupAddress.textContent = transformSimpleInfo(elem.offer.address, popupAddress);
@@ -233,6 +231,10 @@ var generateCard = function (elem) {
 
   cardFragment.appendChild(card);
   map.insertBefore(cardFragment, mapFiltersContainer);
+
+  popupClose.addEventListener('click', function () {
+    removeOldCard();
+  });
 };
 
 var setAddress = function () {
@@ -251,6 +253,20 @@ var enableElements = function (elem) {
   });
 };
 
+var generatePin = function (elem) {
+  var pin = pinTemplate.cloneNode(true);
+  var pinImg = pin.querySelector('img');
+  pin.style.left = elem.location.x + PIN_OFFSET_X + 'px';
+  pin.style.top = elem.location.y + PIN_OFFSET_Y + 'px';
+  pinImg.src = elem.author.avatar;
+  pinImg.alt = elem.offer.description;
+  pin.addEventListener('click', function () {
+    removeOldCard();
+    generateCard(elem);
+  });
+  pinFragment.appendChild(pin);
+};
+
 var setActiveState = function () {
   adForm.classList.remove('ad-form--disabled');
   enableElements(adFormFieldsets);
@@ -259,9 +275,7 @@ var setActiveState = function () {
   enableElements(mapFiltersInputs);
 
   document.querySelector('.map').classList.remove('map--faded');
-
   mapPins.appendChild(pinFragment);
-  generateCard(offerList[0]);
 };
 
 var compareRoomsAndGuests = function () {
@@ -329,6 +343,12 @@ adRooms.addEventListener('change', function () {
 
 adGuests.addEventListener('change', function () {
   compareRoomsAndGuests();
+});
+
+document.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Escape') {
+    removeOldCard();
+  }
 });
 
 var offerList = generateOffers(OFFERS_AMOUNT);
