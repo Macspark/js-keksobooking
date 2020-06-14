@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var OFFERS_AMOUNT = 8;
-
   var TITLES = ['Название 1', 'Название 2', 'Название 3', 'Название 4', 'Название 5', 'Название 6', 'Название 7', 'Название 8'];
   var DESCRIPTIONS = ['Описание 1', 'Описание 2', 'Описание 3', 'Описание 4', 'Описание 5', 'Описание 6', 'Описание 7', 'Описание 8'];
   var TYPES = ['palace', 'flat', 'house', 'bungalo'];
@@ -83,12 +81,8 @@
     return tempArr;
   };
 
-  offerList = generateOffers(OFFERS_AMOUNT);
-  offerList.forEach(function (elem) {
-    window.pin.generate(elem);
-  });
-
   window.data = {
+    generate: generateOffers,
     offers: offerList
   };
 })();
