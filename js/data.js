@@ -23,7 +23,7 @@
   var MIN_GUESTS = 1;
   var MAX_GUESTS = 100;
 
-  var offerList;
+  var offersList = [];
 
   var generateAvatar = function (number) {
     number = number + 1;
@@ -33,18 +33,6 @@
 
   var generateAddress = function (locationXY) {
     return locationXY.x + ', ' + locationXY.y;
-  };
-
-  var getRandomizedArray = function (list, min) {
-    var tempArr = list.slice();
-    var randomArr = [];
-    var arrLength = window.util.getRandomNumber(min, tempArr.length);
-    for (var i = 0; i < arrLength; i++) {
-      var randomElem = window.util.getRandomElement(tempArr);
-      randomArr.push(randomElem);
-      tempArr.splice(tempArr.indexOf(randomElem), 1);
-    }
-    return randomArr;
   };
 
   var generateElement = function (i) {
@@ -66,23 +54,21 @@
         guests: window.util.getRandomNumber(MIN_GUESTS, MAX_GUESTS),
         checkin: window.util.getRandomElement(TIMES),
         checkout: window.util.getRandomElement(TIMES),
-        features: getRandomizedArray(FEATURES, MIN_FEATURES),
+        features: window.util.getRandomizedArray(FEATURES, MIN_FEATURES),
         description: DESCRIPTIONS[i],
-        photos: getRandomizedArray(PHOTOS, MIN_PHOTOS)
+        photos: window.util.getRandomizedArray(PHOTOS, MIN_PHOTOS)
       }
     };
   };
 
   var generateOffers = function (amount) {
-    var tempArr = [];
     for (var i = 0; i < amount; i++) {
-      tempArr.push(generateElement(i));
+      offersList.push(generateElement(i));
     }
-    return tempArr;
+    return offersList;
   };
 
   window.data = {
-    generate: generateOffers,
-    offers: offerList
+    generate: generateOffers
   };
 })();

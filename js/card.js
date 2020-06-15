@@ -90,20 +90,6 @@
     }
   };
 
-  var onEscDown = function (evt) {
-    if (evt.key === 'Escape') {
-      removeOldCard();
-    }
-  };
-
-  var removeOldCard = function () {
-    var card = document.querySelector('.map .popup');
-    if (card) {
-      document.removeEventListener('keydown', onEscDown);
-      window.map.container.removeChild(card);
-    }
-  };
-
   var generateCard = function (elem) {
     var cardTemplate = document.querySelector('#card').content.querySelector('article');
     var cardFragment = document.createDocumentFragment();
@@ -133,14 +119,12 @@
     transformAvatar(elem.author.avatar, popupAvatar);
 
     cardFragment.appendChild(card);
-    window.map.container.insertBefore(cardFragment, window.map.filtersContainer);
+    window.map.drawCard(cardFragment);
 
-    popupClose.addEventListener('click', removeOldCard);
-    document.addEventListener('keydown', onEscDown);
+    popupClose.addEventListener('click', window.map.removeCard);
   };
 
   window.card = {
-    generate: generateCard,
-    remove: removeOldCard
+    generate: generateCard
   };
 })();

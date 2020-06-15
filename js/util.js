@@ -24,6 +24,18 @@
     }
   };
 
+  var getRandomizedArray = function (list, min) {
+    var tempArr = list.slice();
+    var randomArr = [];
+    var arrLength = window.util.getRandomNumber(min, tempArr.length);
+    for (var i = 0; i < arrLength; i++) {
+      var randomElem = window.util.getRandomElement(tempArr);
+      randomArr.push(randomElem);
+      tempArr.splice(tempArr.indexOf(randomElem), 1);
+    }
+    return randomArr;
+  };
+
   var disableElements = function (elem) {
     elem.forEach(function (e) {
       e.setAttribute('disabled', true);
@@ -41,6 +53,7 @@
     enableElements: enableElements,
     getRandomNumber: getRandomNumber,
     getRandomElement: getRandomElement,
-    getDeclinedWord: getDeclinedWord
+    getDeclinedWord: getDeclinedWord,
+    getRandomizedArray: getRandomizedArray
   };
 })();

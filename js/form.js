@@ -1,9 +1,6 @@
 'use strict';
 
 (function () {
-  var MAIN_PIN_OFFSET_X = 32;
-  var MAIN_PIN_OFFSET_Y = 80;
-
   var adForm = document.querySelector('.ad-form');
   var adFormFieldsets = document.querySelectorAll('.ad-form fieldset');
 
@@ -16,19 +13,8 @@
   var adAddress = document.querySelector('#address');
 
   var setAddress = function () {
-    var x = parseInt(window.map.mainPin.style.left, 10);
-    var y = parseInt(window.map.mainPin.style.top, 10);
-
-    if (window.map.container.classList.contains('map--faded')) {
-      var cx = Math.floor(window.map.mainPin.offsetWidth / 2);
-      var cy = Math.floor(window.map.mainPin.offsetHeight / 2);
-      x = x + cx;
-      y = y + cy;
-    } else {
-      x = x + MAIN_PIN_OFFSET_X;
-      y = y + MAIN_PIN_OFFSET_Y;
-    }
-    adAddress.value = x + ', ' + y;
+    var coordinates = window.map.getMainPinCoordinates();
+    adAddress.value = coordinates.x + ', ' + coordinates.y;
   };
 
   var compareRoomsAndGuests = function () {
@@ -46,6 +32,23 @@
         adGuests.setCustomValidity('');
         break;
     }
+  };
+
+  var initializeForm = function () {
+    adAddress.setAttribute('readonly', true);
+
+    adForm.classList.add('ad-form--disabled');
+    window.util.disableElements(adFormFieldsets);
+
+    setAddress();
+    compareRoomsAndGuests();
+  };
+
+  var unlockForm = function () {
+    adForm.classList.remove('ad-form--disabled');
+    window.util.enableElements(adFormFieldsets);
+
+    setAddress();
   };
 
   adType.addEventListener('change', function () {
@@ -88,11 +91,10 @@
   });
 
   window.form = {
-    container: adForm,
-    fieldsets: adFormFieldsets,
-    address: adAddress,
+    init: initializeForm,
+    unlock: unlockForm,
     setAddress: setAddress,
-    compareRooms: compareRoomsAndGuests
+    compareRooms: compareRoomsAndGuests,
   };
 
 })();

@@ -15,7 +15,7 @@
     pinImg.src = elem.author.avatar;
     pinImg.alt = elem.offer.description;
     pin.addEventListener('click', function () {
-      window.card.remove();
+      window.map.removeCard();
       window.card.generate(elem);
     });
     pinFragment.appendChild(pin);
