@@ -11,11 +11,6 @@
   var MIN_FEATURES = 1;
   var MIN_PHOTOS = 1;
 
-  var MIN_X = 0;
-  var MAX_X = document.querySelector('.map__pins').offsetWidth;
-  var MIN_Y = 130;
-  var MAX_Y = 630;
-
   var MIN_PRICE = 1000;
   var MAX_PRICE = 100000;
   var MIN_ROOMS = 1;
@@ -36,10 +31,7 @@
   };
 
   var generateElement = function (i) {
-    var locationXY = {
-      x: window.util.getRandomNumber(MIN_X, MAX_X),
-      y: window.util.getRandomNumber(MIN_Y, MAX_Y)
-    };
+    var locationXY = window.map.getRandomLocation();
     return {
       author: {
         avatar: generateAvatar(i)
