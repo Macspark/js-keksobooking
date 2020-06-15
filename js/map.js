@@ -66,6 +66,12 @@
     mapPins.appendChild(fragment);
   };
 
+  var onEscDown = function (evt) {
+    if (evt.key === 'Escape') {
+      removeCard();
+    }
+  };
+
   var drawCard = function (fragment) {
     map.insertBefore(fragment, mapFiltersContainer);
     document.addEventListener('keydown', onEscDown);
@@ -87,12 +93,6 @@
 
     mapMainPin.removeEventListener('mousedown', onLeftMouseDown);
     mapMainPin.removeEventListener('keydown', onEnterDown);
-  };
-
-  var onEscDown = function (evt) {
-    if (evt.key === 'Escape') {
-      removeCard();
-    }
   };
 
   mapMainPin.addEventListener('mousedown', onLeftMouseDown);
