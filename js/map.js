@@ -136,11 +136,11 @@
           y: (mapMainPin.offsetTop - shift.y)
         };
 
-        if (finalCoords.x >= MAP_SIZE.minX - MAIN_PIN_OFFSET_X && finalCoords.x <= MAP_SIZE.maxX - MAIN_PIN_OFFSET_X) {
+        if (finalCoords.x >= (MAP_SIZE.minX - MAIN_PIN_OFFSET_X) && finalCoords.x <= (MAP_SIZE.maxX - MAIN_PIN_OFFSET_X)) {
           mapMainPin.style.left = finalCoords.x + 'px';
         }
 
-        if (finalCoords.y >= MAP_SIZE.minY - MAIN_PIN_OFFSET_Y && finalCoords.y <= MAP_SIZE.maxY - MAIN_PIN_OFFSET_Y) {
+        if (finalCoords.y >= (MAP_SIZE.minY - MAIN_PIN_OFFSET_Y) && finalCoords.y <= (MAP_SIZE.maxY - MAIN_PIN_OFFSET_Y)) {
           mapMainPin.style.top = finalCoords.y + 'px';
         }
         window.form.setAddress();
