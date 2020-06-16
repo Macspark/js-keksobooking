@@ -96,5 +96,4 @@
     setAddress: setAddress,
     compareRooms: compareRoomsAndGuests,
   };
-
 })();
