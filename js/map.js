@@ -21,7 +21,7 @@
 
   var inactive = true;
 
-  var initializeMap = function () {
+  var lockMap = function () {
     mapFilters.classList.add('map__filters--disabled');
     window.util.disableElements(mapFiltersSelects);
     window.util.disableElements(mapFiltersInputs);
@@ -177,10 +177,10 @@
     }
   });
 
-  initializeMap();
+  lockMap();
 
   window.map = {
-    init: initializeMap,
+    lock: lockMap,
     isMapFaded: isMapFaded,
     getMainPinCoordinates: getMainPinCoordinates,
     getRandomLocation: getRandomLocation,
