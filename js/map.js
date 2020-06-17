@@ -97,7 +97,7 @@
   var setActiveState = function () {
     unlockMap();
     window.form.unlock();
-    drawPins(window.pin.fragment);
+    window.load();
 
     mapMainPin.removeEventListener('keydown', onEnterDown);
     inactive = false;
@@ -157,11 +157,14 @@
     }
   });
 
+  initializeMap();
+
   window.map = {
     init: initializeMap,
     isMapFaded: isMapFaded,
     getMainPinCoordinates: getMainPinCoordinates,
     getRandomLocation: getRandomLocation,
+    drawPins: drawPins,
     drawCard: drawCard,
     removeCard: removeCard
   };

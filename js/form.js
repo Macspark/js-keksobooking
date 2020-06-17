@@ -90,6 +90,8 @@
     compareRoomsAndGuests();
   });
 
+  initializeForm();
+
   window.form = {
     init: initializeForm,
     unlock: unlockForm,
