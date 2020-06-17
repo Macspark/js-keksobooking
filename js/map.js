@@ -95,10 +95,30 @@
   };
 
   var setActiveState = function () {
+
+    var onSuccess = function (data) {
+      data.forEach(function (elem) {
+        window.pin.generate(elem);
+        drawPins(window.pin.fragment);
+      });
+    };
+
+    var onError = function (errorMessage) {
+      var node = document.createElement('div');
+      node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: rgba(255, 86, 53, 0.9);';
+      node.style.position = 'absolute';
+      node.style.left = 0;
+      node.style.right = 0;
+      node.style.fontSize = '30px';
+
+      node.textContent = 'Не удалось загрузить объявления. (' + errorMessage + ')';
+      document.body.insertAdjacentElement('afterbegin', node);
+    };
+
+    window.load(onSuccess, onError);
+
     unlockMap();
     window.form.unlock();
-    window.load();
-
     mapMainPin.removeEventListener('keydown', onEnterDown);
     inactive = false;
   };
@@ -164,7 +184,6 @@
     isMapFaded: isMapFaded,
     getMainPinCoordinates: getMainPinCoordinates,
     getRandomLocation: getRandomLocation,
-    drawPins: drawPins,
     drawCard: drawCard,
     removeCard: removeCard
   };
