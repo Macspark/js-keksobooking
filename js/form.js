@@ -34,7 +34,7 @@
     }
   };
 
-  var initializeForm = function () {
+  var lockForm = function () {
     adAddress.setAttribute('readonly', true);
 
     adForm.classList.add('ad-form--disabled');
@@ -90,8 +90,10 @@
     compareRoomsAndGuests();
   });
 
+  lockForm();
+
   window.form = {
-    init: initializeForm,
+    lock: lockForm,
     unlock: unlockForm,
     setAddress: setAddress,
     compareRooms: compareRoomsAndGuests,
