@@ -4,7 +4,6 @@
   var TIMEOUT_IN_MS = 10000;
   var URL = 'https://javascript.pages.academy/keksobooking/data';
 
-  var main = document.querySelector('main');
   var offers = [];
 
   var StatusCode = {
@@ -19,42 +18,16 @@
     });
   };
 
-  var onError = function (message) {
-    var errorTemplate = document.querySelector('#error').content.querySelector('div');
-    var errorFragment = document.createDocumentFragment();
-    var error = errorTemplate.cloneNode(true);
+  var onError = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: rgba(255, 86, 53, 0.9);';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
 
-    var errorMsg = error.querySelector('.error__message');
-    var errorBtn = error.querySelector('.error__button');
-    errorMsg.textContent = message;
-
-    errorFragment.appendChild(error);
-    main.appendChild(errorFragment);
-
-    var removeErrorPopup = function () {
-      var errorPopup = document.querySelector('main .error');
-
-      document.removeEventListener('keydown', onEscDown);
-      document.removeEventListener('mousedown', onMouseDownOutside);
-
-      main.removeChild(errorPopup);
-    };
-
-    var onMouseDownOutside = function (evt) {
-      if (evt.target !== errorMsg && evt.button === 0) {
-        removeErrorPopup();
-      }
-    };
-
-    var onEscDown = function (evt) {
-      if (evt.key === 'Escape') {
-        removeErrorPopup();
-      }
-    };
-
-    document.addEventListener('keydown', onEscDown);
-    document.addEventListener('mousedown', onMouseDownOutside);
-    errorBtn.addEventListener('click', removeErrorPopup);
+    node.textContent = 'Не удалось загрузить объявления. (' + errorMessage + ')';
+    document.body.insertAdjacentElement('afterbegin', node);
   };
 
   window.load = function () {
