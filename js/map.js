@@ -13,6 +13,10 @@
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
   var mapMainPin = document.querySelector('.map__pin--main');
+  var mapMainPinDefaultPosition = {
+    x: mapMainPin.style.left,
+    y: mapMainPin.style.top
+  };
 
   var mapFilters = document.querySelector('.map__filters');
   var mapFiltersContainer = document.querySelector('.map__filters-container');
@@ -22,6 +26,8 @@
   var inactive = true;
 
   var lockMap = function () {
+    inactive = true;
+    map.classList.add('map--faded');
     mapFilters.classList.add('map__filters--disabled');
     window.util.disableElements(mapFiltersSelects);
     window.util.disableElements(mapFiltersInputs);
@@ -177,10 +183,22 @@
     }
   });
 
+  var resetMap = function () {
+    var pinsOnMap = mapPins.querySelectorAll('.map__pin');
+    for (var i = 1; i < pinsOnMap.length; i++) {
+      pinsOnMap[i].remove();
+    }
+
+    mapMainPin.style.left = mapMainPinDefaultPosition.x;
+    mapMainPin.style.top = mapMainPinDefaultPosition.y;
+    removeCard();
+    lockMap();
+  };
+
   lockMap();
 
   window.map = {
-    lock: lockMap,
+    reset: resetMap,
     isMapFaded: isMapFaded,
     getMainPinCoordinates: getMainPinCoordinates,
     getRandomLocation: getRandomLocation,

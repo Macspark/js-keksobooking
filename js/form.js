@@ -4,6 +4,7 @@
   var adForm = document.querySelector('.ad-form');
   var adFormFieldsets = document.querySelectorAll('.ad-form fieldset');
 
+  var adTitle = document.querySelector('#title');
   var adPrice = document.querySelector('#price');
   var adType = document.querySelector('#type');
   var adTimein = document.querySelector('#timein');
@@ -11,6 +12,16 @@
   var adRooms = document.querySelector('#room_number');
   var adGuests = document.querySelector('#capacity');
   var adAddress = document.querySelector('#address');
+  var adDescription = document.querySelector('#description');
+  var adFeatures = document.querySelectorAll('.ad-form .feature__checkbox');
+
+  var adTypeDefault = adType.value;
+  var adTimeinDefault = adTimein.value;
+  var adTimeoutDefault = adTimeout.value;
+  var adRoomsDefault = adRooms.value;
+  var adGuestsDefault = adGuests.value;
+
+  var adReset = document.querySelector('.ad-form__reset');
 
   var setAddress = function () {
     var coordinates = window.map.getMainPinCoordinates();
@@ -35,23 +46,20 @@
   };
 
   var lockForm = function () {
-    adAddress.setAttribute('readonly', true);
-
     adForm.classList.add('ad-form--disabled');
     window.util.disableElements(adFormFieldsets);
-
     setAddress();
+    compareTypeAndPrice();
     compareRoomsAndGuests();
   };
 
   var unlockForm = function () {
     adForm.classList.remove('ad-form--disabled');
     window.util.enableElements(adFormFieldsets);
-
     setAddress();
   };
 
-  adType.addEventListener('change', function () {
+  var compareTypeAndPrice = function () {
     var price;
     switch (adType.value) {
       case 'bungalo':
@@ -72,6 +80,25 @@
     }
     adPrice.min = price;
     adPrice.placeholder = price * 5;
+  };
+
+  var resetForm = function () {
+    adTitle.value = adTitle.defaultValue;
+    adPrice.value = adPrice.defaultValue;
+    adType.value = adTypeDefault;
+    adTimein.value = adTimeinDefault;
+    adTimeout.value = adTimeoutDefault;
+    adRooms.value = adRoomsDefault;
+    adGuests.value = adGuestsDefault;
+    adDescription.value = adDescription.defaultValue;
+    adFeatures.forEach(function (elem) {
+      elem.checked = false;
+    });
+    lockForm();
+  };
+
+  adType.addEventListener('change', function () {
+    compareTypeAndPrice();
   });
 
   adTimein.addEventListener('change', function () {
@@ -90,10 +117,29 @@
     compareRoomsAndGuests();
   });
 
+  adReset.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    window.map.reset();
+    resetForm();
+  });
+
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    var onSuccess = function () {
+      window.map.reset();
+      resetForm();
+      window.uploadPopup.success();
+    };
+    var onError = function () {
+      window.uploadPopup.error();
+    };
+    window.upload(new FormData(adForm), onSuccess, onError);
+  });
+
+  adAddress.setAttribute('readonly', true);
   lockForm();
 
   window.form = {
-    lock: lockForm,
     unlock: unlockForm,
     setAddress: setAddress,
     compareRooms: compareRoomsAndGuests,
