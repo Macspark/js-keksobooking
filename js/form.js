@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var POST_URL = 'https://javascript.pages.academy/keksobooking';
+
   var adForm = document.querySelector('.ad-form');
   var adFormFieldsets = document.querySelectorAll('.ad-form fieldset');
 
@@ -125,15 +127,23 @@
 
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
+
     var onSuccess = function () {
       window.map.reset();
       resetForm();
-      window.uploadPopup.success();
+      window.popup.success();
     };
-    var onError = function () {
-      window.uploadPopup.error();
+
+    var onError = function (errorMsg) {
+      window.popup.error(errorMsg);
     };
-    window.upload(new FormData(adForm), onSuccess, onError);
+
+    window.xhr({
+      method: 'POST',
+      url: POST_URL,
+      data: new FormData(adForm)
+    }, onSuccess, onError);
+
   });
 
   adAddress.setAttribute('readonly', true);
