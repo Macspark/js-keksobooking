@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var LOAD_URL = 'https://javascript.pages.academy/keksobooking/data';
   var MAIN_PIN_OFFSET_X = 32;
   var MAIN_PIN_OFFSET_Y = 80;
   var MAP_SIZE = {
@@ -13,6 +14,10 @@
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
   var mapMainPin = document.querySelector('.map__pin--main');
+  var mapMainPinDefaultPosition = {
+    x: mapMainPin.style.left,
+    y: mapMainPin.style.top
+  };
 
   var mapFilters = document.querySelector('.map__filters');
   var mapFiltersContainer = document.querySelector('.map__filters-container');
@@ -22,6 +27,8 @@
   var inactive = true;
 
   var lockMap = function () {
+    inactive = true;
+    map.classList.add('map--faded');
     mapFilters.classList.add('map__filters--disabled');
     window.util.disableElements(mapFiltersSelects);
     window.util.disableElements(mapFiltersInputs);
@@ -97,13 +104,11 @@
   var setActiveState = function () {
 
     var onSuccess = function (data) {
-      data.forEach(function (elem) {
-        window.pin.generate(elem);
-        drawPins(window.pin.fragment);
-      });
+      var pins = window.pin.generateFragment(data);
+      drawPins(pins);
     };
 
-    var onError = function (errorMessage) {
+    var onError = function (errorMsg) {
       var node = document.createElement('div');
       node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: rgba(255, 86, 53, 0.9);';
       node.style.position = 'absolute';
@@ -111,11 +116,14 @@
       node.style.right = 0;
       node.style.fontSize = '30px';
 
-      node.textContent = 'Не удалось загрузить объявления. (' + errorMessage + ')';
+      node.textContent = 'Не удалось загрузить объявления (' + errorMsg + ')';
       document.body.insertAdjacentElement('afterbegin', node);
     };
 
-    window.load(onSuccess, onError);
+    window.xhr({
+      method: 'GET',
+      url: LOAD_URL
+    }, onSuccess, onError);
 
     unlockMap();
     window.form.unlock();
@@ -177,10 +185,22 @@
     }
   });
 
+  var resetMap = function () {
+    var pinsOnMap = mapPins.querySelectorAll('.map__pin');
+    for (var i = 1; i < pinsOnMap.length; i++) {
+      pinsOnMap[i].remove();
+    }
+
+    mapMainPin.style.left = mapMainPinDefaultPosition.x;
+    mapMainPin.style.top = mapMainPinDefaultPosition.y;
+    removeCard();
+    lockMap();
+  };
+
   lockMap();
 
   window.map = {
-    lock: lockMap,
+    reset: resetMap,
     isMapFaded: isMapFaded,
     getMainPinCoordinates: getMainPinCoordinates,
     getRandomLocation: getRandomLocation,
