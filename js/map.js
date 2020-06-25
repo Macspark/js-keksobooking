@@ -1,15 +1,17 @@
 'use strict';
 
 (function () {
-  var LOAD_URL = 'https://javascript.pages.academy/keksobooking/data';
+  var LOAD_PATH = 'keksobooking/data';
   var MAIN_PIN_OFFSET_X = 32;
   var MAIN_PIN_OFFSET_Y = 80;
   var MAP_SIZE = {
-    minX: 0,
-    maxX: document.querySelector('.map__pins').offsetWidth,
-    minY: 130,
-    maxY: 630
+    MIN_X: 0,
+    MAX_X: document.querySelector('.map__pins').offsetWidth,
+    MIN_Y: 130,
+    MAX_Y: 630
   };
+
+  var offersList = [];
 
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
@@ -35,11 +37,13 @@
   };
 
   var unlockMap = function () {
+    map.classList.remove('map--faded');
+  };
+
+  var unlockFilters = function () {
     mapFilters.classList.remove('map__filters--disabled');
     window.util.enableElements(mapFiltersSelects);
     window.util.enableElements(mapFiltersInputs);
-
-    document.querySelector('.map').classList.remove('map--faded');
   };
 
   var isMapFaded = function () {
@@ -67,13 +71,9 @@
 
   var getRandomLocation = function () {
     return {
-      x: window.util.getRandomNumber(MAP_SIZE.minX, MAP_SIZE.maxX),
-      y: window.util.getRandomNumber(MAP_SIZE.minY, MAP_SIZE.maxY)
+      x: window.util.getRandomNumber(MAP_SIZE.MIN_X, MAP_SIZE.MAX_X),
+      y: window.util.getRandomNumber(MAP_SIZE.MIN_Y, MAP_SIZE.MAX_Y)
     };
-  };
-
-  var drawPins = function (fragment) {
-    mapPins.appendChild(fragment);
   };
 
   var onEscDown = function (evt) {
@@ -104,8 +104,9 @@
   var setActiveState = function () {
 
     var onSuccess = function (data) {
-      var pins = window.pin.generateFragment(data);
-      drawPins(pins);
+      offersList = data;
+      window.filter.init(offersList, mapPins);
+      unlockFilters();
     };
 
     var onError = function (errorMsg) {
@@ -122,7 +123,7 @@
 
     window.xhr({
       method: 'GET',
-      url: LOAD_URL
+      path: LOAD_PATH
     }, onSuccess, onError);
 
     unlockMap();
@@ -164,11 +165,11 @@
           y: (mapMainPin.offsetTop - shift.y)
         };
 
-        if (finalCoords.x >= (MAP_SIZE.minX - MAIN_PIN_OFFSET_X) && finalCoords.x <= (MAP_SIZE.maxX - MAIN_PIN_OFFSET_X)) {
+        if (finalCoords.x >= (MAP_SIZE.MIN_X - MAIN_PIN_OFFSET_X) && finalCoords.x <= (MAP_SIZE.MAX_X - MAIN_PIN_OFFSET_X)) {
           mapMainPin.style.left = finalCoords.x + 'px';
         }
 
-        if (finalCoords.y >= (MAP_SIZE.minY - MAIN_PIN_OFFSET_Y) && finalCoords.y <= (MAP_SIZE.maxY - MAIN_PIN_OFFSET_Y)) {
+        if (finalCoords.y >= (MAP_SIZE.MIN_Y - MAIN_PIN_OFFSET_Y) && finalCoords.y <= (MAP_SIZE.MAX_Y - MAIN_PIN_OFFSET_Y)) {
           mapMainPin.style.top = finalCoords.y + 'px';
         }
         window.form.setAddress();
@@ -185,17 +186,21 @@
     }
   });
 
-  var resetMap = function () {
+  var removePins = function () {
     var pinsOnMap = mapPins.querySelectorAll('.map__pin');
     for (var i = 1; i < pinsOnMap.length; i++) {
       pinsOnMap[i].remove();
     }
+  };
 
+  var resetMap = function () {
+    removePins();
     mapMainPin.style.left = mapMainPinDefaultPosition.x;
     mapMainPin.style.top = mapMainPinDefaultPosition.y;
     removeCard();
     lockMap();
   };
+
 
   lockMap();
 
@@ -205,6 +210,7 @@
     getMainPinCoordinates: getMainPinCoordinates,
     getRandomLocation: getRandomLocation,
     drawCard: drawCard,
-    removeCard: removeCard
+    removeCard: removeCard,
+    removePins: removePins
   };
 })();

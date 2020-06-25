@@ -1,6 +1,13 @@
 'use strict';
 
 (function () {
+  var offerTypeMap = {
+    'bungalo': 'Бунгало',
+    'flat': 'Квартира',
+    'house': 'Дом',
+    'palace': 'Дворец'
+  };
+
   var isElementFilled = function (elem, container) {
     if (!elem) {
       container.classList.add('hidden');
@@ -23,25 +30,7 @@
 
   var transformType = function (elem, container) {
     if (isElementFilled(elem, container)) {
-      var offerType;
-      switch (elem) {
-        case 'bungalo':
-          offerType = 'Бунгало';
-          break;
-        case 'flat':
-          offerType = 'Квартира';
-          break;
-        case 'house':
-          offerType = 'Дом';
-          break;
-        case 'palace':
-          offerType = 'Дворец';
-          break;
-        default:
-          offerType = 'Тип жилья не указан';
-          break;
-      }
-      container.textContent = offerType;
+      container.textContent = offerTypeMap[elem];
     }
   };
 
