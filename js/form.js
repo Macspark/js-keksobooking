@@ -101,6 +101,7 @@
 
   var resetPage = function () {
     window.map.reset();
+    window.filter.reset();
     resetForm();
   };
 

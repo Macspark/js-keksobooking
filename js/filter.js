@@ -18,7 +18,7 @@
   var updateFilter = function () {
     var filteredOffers = offersList;
 
-    if (filterType.value !== 'any') {
+    if (filterType.selectedIndex !== 0) {
       filteredOffers = offersList.filter(function (elem) {
         return elem.offer.type === filterType.value;
       });
@@ -33,8 +33,13 @@
     window.pins.create(filteredOffers, pinsContainer);
   };
 
+  var resetFilter = function () {
+    filterType.selectedIndex = 0;
+  };
+
   window.filter = {
     init: initializeFilter,
-    update: updateFilter
+    update: updateFilter,
+    reset: resetFilter
   };
 })();
