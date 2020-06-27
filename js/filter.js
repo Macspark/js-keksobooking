@@ -10,6 +10,8 @@
   var filterPrice = document.querySelector('#housing-price');
   var filterRooms = document.querySelector('#housing-rooms');
   var filterGuests = document.querySelector('#housing-guests');
+  var filterFeatures = document.querySelector('#housing-features');
+  var filterFeaturesInputs = filterFeatures.querySelectorAll('input');
 
   var initializeFilter = function (offers, container) {
     offersList = offers;
@@ -18,6 +20,7 @@
     filterPrice.addEventListener('change', updateFilter);
     filterRooms.addEventListener('change', updateFilter);
     filterGuests.addEventListener('change', updateFilter);
+    filterFeatures.addEventListener('change', updateFilter);
     updateFilter();
   };
 
@@ -42,13 +45,25 @@
     return (option === 'any' || offer === parseInt(option, 10));
   };
 
+  var areOfferFeaturesCorrect = function (offer, features) {
+    if (features.length > 0) {
+      for (var i = 0; i < features.length; i++) {
+        if (!offer.includes(features[i].value)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
   var filterOffers = function (offers, options) {
     var filteredOffers = [];
     for (var i = 0; i < offers.length; i++) {
       if (isOfferStringCorrect(offers[i].offer.type, options.type) &&
           isOfferStringCorrect(getPriceNameRange(offers[i].offer.price), options.price) &&
           isOfferIntCorrect(offers[i].offer.rooms, options.rooms) &&
-          isOfferIntCorrect(offers[i].offer.guests, options.guests)) {
+          isOfferIntCorrect(offers[i].offer.guests, options.guests) &&
+          areOfferFeaturesCorrect(offers[i].offer.features, options.features)) {
         filteredOffers.push(offers[i]);
       }
       if (filteredOffers.length >= MAX_OFFERS) {
@@ -63,7 +78,8 @@
       type: filterType.value,
       price: filterPrice.value,
       rooms: filterRooms.value,
-      guests: filterGuests.value
+      guests: filterGuests.value,
+      features: filterFeatures.querySelectorAll('input:checked')
     };
 
     var filteredOffers = filterOffers(offersList, filterOptions);
@@ -78,6 +94,9 @@
     filterPrice.selectedIndex = 0;
     filterRooms.selectedIndex = 0;
     filterGuests.selectedIndex = 0;
+    filterFeaturesInputs.forEach(function (elem) {
+      elem.checked = false;
+    });
   };
 
   window.filter = {
