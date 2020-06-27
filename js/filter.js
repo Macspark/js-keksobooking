@@ -11,7 +11,6 @@
   var filterRooms = document.querySelector('#housing-rooms');
   var filterGuests = document.querySelector('#housing-guests');
   var filterFeatures = document.querySelector('#housing-features');
-  var filterFeaturesInputs = filterFeatures.querySelectorAll('input');
 
   var initializeFilter = function (offers, container) {
     offersList = offers;
@@ -94,7 +93,7 @@
     filterPrice.selectedIndex = 0;
     filterRooms.selectedIndex = 0;
     filterGuests.selectedIndex = 0;
-    filterFeaturesInputs.forEach(function (elem) {
+    filterFeatures.querySelectorAll('input:checked').forEach(function (elem) {
       elem.checked = false;
     });
   };
