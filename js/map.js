@@ -69,13 +69,6 @@
     };
   };
 
-  var getRandomLocation = function () {
-    return {
-      x: window.util.getRandomNumber(MAP_SIZE.MIN_X, MAP_SIZE.MAX_X),
-      y: window.util.getRandomNumber(MAP_SIZE.MIN_Y, MAP_SIZE.MAX_Y)
-    };
-  };
-
   var onEscDown = function (evt) {
     if (evt.key === 'Escape') {
       removeCard();
@@ -208,7 +201,6 @@
     reset: resetMap,
     isMapFaded: isMapFaded,
     getMainPinCoordinates: getMainPinCoordinates,
-    getRandomLocation: getRandomLocation,
     drawCard: drawCard,
     removeCard: removeCard,
     removePins: removePins
