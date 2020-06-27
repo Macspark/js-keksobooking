@@ -75,6 +75,9 @@
 
   var resetFilter = function () {
     filterType.selectedIndex = 0;
+    filterPrice.selectedIndex = 0;
+    filterRooms.selectedIndex = 0;
+    filterGuests.selectedIndex = 0;
   };
 
   window.filter = {
