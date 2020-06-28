@@ -72,7 +72,7 @@
     return filteredOffers;
   };
 
-  var updateFilter = function () {
+  var updateFilter = window.debounce(function () {
     var filterOptions = {
       type: filterType.value,
       price: filterPrice.value,
@@ -86,7 +86,7 @@
     window.map.removeCard();
     window.map.removePins();
     window.pins.create(filteredOffers, pinsContainer);
-  };
+  });
 
   var resetFilter = function () {
     filterType.selectedIndex = 0;
