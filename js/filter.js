@@ -36,18 +36,18 @@
     }
   };
 
-  var isOfferStringCorrect = function (offer, option) {
-    return (option === 'any' || offer === option);
+  var isOfferStringCorrect = function (offerProperty, filterOption) {
+    return (filterOption === 'any' || offerProperty === filterOption);
   };
 
-  var isOfferIntCorrect = function (offer, option) {
-    return (option === 'any' || offer === parseInt(option, 10));
+  var isOfferIntCorrect = function (offerProperty, filterOption) {
+    return (filterOption === 'any' || offerProperty === parseInt(filterOption, 10));
   };
 
-  var areOfferFeaturesCorrect = function (offer, features) {
-    if (features.length > 0) {
-      for (var i = 0; i < features.length; i++) {
-        if (!offer.includes(features[i].value)) {
+  var areOfferFeaturesCorrect = function (offerFeatures, checkedFeatures) {
+    if (checkedFeatures.length > 0) {
+      for (var i = 0; i < checkedFeatures.length; i++) {
+        if (offerFeatures.indexOf(checkedFeatures[i].value) === -1) {
           return false;
         }
       }
