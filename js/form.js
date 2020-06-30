@@ -17,6 +17,13 @@
   var adDescription = document.querySelector('#description');
   var adFeatures = document.querySelectorAll('.ad-form .feature__checkbox');
 
+  var adAvatarInput = document.querySelector('.ad-form__field input[type=file]');
+  var adAvatarImg = document.querySelector('.ad-form-header__preview img');
+
+  var adPhotosInput = document.querySelector('.ad-form__input');
+  var adPhotosContainer = document.querySelector('.ad-form__photo-container');
+  var isFirstPhotoUploaded = false;
+
   var adTypeDefault = adType.value;
   var adTimeinDefault = adTimein.value;
   var adTimeoutDefault = adTimeout.value;
@@ -123,6 +130,39 @@
 
   adGuests.addEventListener('change', function () {
     compareRoomsAndGuests();
+  });
+
+  adAvatarInput.addEventListener('change', function () {
+    var onLoad = function (result) {
+      adAvatarImg.src = result;
+    };
+    window.photo.add(adAvatarInput, onLoad);
+  });
+
+  adPhotosInput.addEventListener('change', function () {
+    var onLoad = function (result) {
+
+      if (!isFirstPhotoUploaded) {
+        var emptyFrame = document.querySelector('.ad-form__photo');
+        adPhotosContainer.removeChild(emptyFrame);
+        isFirstPhotoUploaded = true;
+      }
+
+      var wrapper = document.createElement('div');
+      var img = document.createElement('img');
+
+      wrapper.classList.add('ad-form__photo');
+      adPhotosContainer.appendChild(wrapper);
+
+      img.style.width = wrapper.offsetWidth + 'px';
+      img.style.height = wrapper.offsetHeight + 'px';
+      img.style.borderRadius = 'inherit';
+      img.objectFit = 'contain';
+      img.src = result;
+
+      wrapper.appendChild(img);
+    };
+    window.photo.add(adPhotosInput, onLoad);
   });
 
   adReset.addEventListener('click', function (evt) {

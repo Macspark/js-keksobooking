@@ -20,30 +20,18 @@
     x: mapMainPin.style.left,
     y: mapMainPin.style.top
   };
-
-  var mapFilters = document.querySelector('.map__filters');
   var mapFiltersContainer = document.querySelector('.map__filters-container');
-  var mapFiltersSelects = document.querySelectorAll('.map__filters select');
-  var mapFiltersInputs = document.querySelectorAll('.map__filters input');
 
   var inactive = true;
 
   var lockMap = function () {
     inactive = true;
     map.classList.add('map--faded');
-    mapFilters.classList.add('map__filters--disabled');
-    window.util.disableElements(mapFiltersSelects);
-    window.util.disableElements(mapFiltersInputs);
+    window.filter.lock();
   };
 
   var unlockMap = function () {
     map.classList.remove('map--faded');
-  };
-
-  var unlockFilters = function () {
-    mapFilters.classList.remove('map__filters--disabled');
-    window.util.enableElements(mapFiltersSelects);
-    window.util.enableElements(mapFiltersInputs);
   };
 
   var isMapFaded = function () {
@@ -99,7 +87,7 @@
     var onSuccess = function (data) {
       offersList = data;
       window.filter.init(offersList, mapPins);
-      unlockFilters();
+      window.filter.unlock();
     };
 
     var onError = function (errorMsg) {
@@ -193,7 +181,6 @@
     removeCard();
     lockMap();
   };
-
 
   lockMap();
 

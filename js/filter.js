@@ -6,22 +6,15 @@
   var offersList = [];
   var pinsContainer;
 
+  var filterContainer = document.querySelector('.map__filters');
+  var filterSelects = document.querySelectorAll('.map__filters select');
+  var filterInputs = document.querySelectorAll('.map__filters input');
+
   var filterType = document.querySelector('#housing-type');
   var filterPrice = document.querySelector('#housing-price');
   var filterRooms = document.querySelector('#housing-rooms');
   var filterGuests = document.querySelector('#housing-guests');
   var filterFeatures = document.querySelector('#housing-features');
-
-  var initializeFilter = function (offers, container) {
-    offersList = offers;
-    pinsContainer = container;
-    filterType.addEventListener('change', updateFilter);
-    filterPrice.addEventListener('change', updateFilter);
-    filterRooms.addEventListener('change', updateFilter);
-    filterGuests.addEventListener('change', updateFilter);
-    filterFeatures.addEventListener('change', updateFilter);
-    updateFilter();
-  };
 
   var getPriceNameRange = function (price) {
     switch (true) {
@@ -98,8 +91,38 @@
     });
   };
 
+  var lockFilter = function () {
+    filterContainer.classList.add('map__filters--disabled');
+    window.util.disableElements(filterSelects);
+    window.util.disableElements(filterInputs);
+    filterType.removeEventListener('change', updateFilter);
+    filterPrice.removeEventListener('change', updateFilter);
+    filterRooms.removeEventListener('change', updateFilter);
+    filterGuests.removeEventListener('change', updateFilter);
+    filterFeatures.removeEventListener('change', updateFilter);
+  };
+
+  var unlockFilter = function () {
+    filterContainer.classList.remove('map__filters--disabled');
+    window.util.enableElements(filterSelects);
+    window.util.enableElements(filterInputs);
+    filterType.addEventListener('change', updateFilter);
+    filterPrice.addEventListener('change', updateFilter);
+    filterRooms.addEventListener('change', updateFilter);
+    filterGuests.addEventListener('change', updateFilter);
+    filterFeatures.addEventListener('change', updateFilter);
+  };
+
+  var initializeFilter = function (offers, container) {
+    offersList = offers;
+    pinsContainer = container;
+    updateFilter();
+  };
+
   window.filter = {
     init: initializeFilter,
+    lock: lockFilter,
+    unlock: unlockFilter,
     update: updateFilter,
     reset: resetFilter
   };
