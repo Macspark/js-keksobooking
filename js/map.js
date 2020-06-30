@@ -6,7 +6,7 @@
   var MAIN_PIN_OFFSET_Y = 80;
   var MAP_SIZE = {
     MIN_X: 0,
-    MAX_X: document.querySelector('.map__pins').offsetWidth,
+    MAX_X: 1200,
     MIN_Y: 130,
     MAX_Y: 630
   };
