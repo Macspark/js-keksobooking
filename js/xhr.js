@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var URL = 'https://javascript.pages.academy/';
   var TIMEOUT_IN_MS = 10000;
 
   var StatusCode = {
@@ -9,6 +10,12 @@
 
   window.xhr = function (options, onSuccess, onError) {
     var xhr = new XMLHttpRequest();
+
+    var fullLink = URL;
+    if (options.path) {
+      fullLink += options.path;
+    }
+
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
@@ -27,7 +34,7 @@
 
     xhr.timeout = TIMEOUT_IN_MS;
 
-    xhr.open(options.method, options.url);
+    xhr.open(options.method, fullLink);
     if (options.data) {
       xhr.send(options.data);
     } else {

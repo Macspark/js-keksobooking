@@ -6,9 +6,9 @@
 
   var pinTemplate = document.querySelector('#pin').content.querySelector('button');
 
-  var generatePin = function (data) {
+  var createPins = function (arr, container) {
     var pinFragment = document.createDocumentFragment();
-    data.forEach(function (elem) {
+    arr.forEach(function (elem) {
       if (elem.offer) {
         var pin = pinTemplate.cloneNode(true);
         var pinImg = pin.querySelector('img');
@@ -23,10 +23,10 @@
         pinFragment.appendChild(pin);
       }
     });
-    return pinFragment;
+    container.appendChild(pinFragment);
   };
 
-  window.pin = {
-    generateFragment: generatePin
+  window.pins = {
+    create: createPins
   };
 })();
