@@ -157,7 +157,6 @@
       img.style.width = wrapper.offsetWidth + 'px';
       img.style.height = wrapper.offsetHeight + 'px';
       img.style.borderRadius = 'inherit';
-      img.objectFit = 'contain';
       img.src = result;
 
       wrapper.appendChild(img);
