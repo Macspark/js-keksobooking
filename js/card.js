@@ -36,10 +36,10 @@
   };
 
   var transformCapacity = function (elem1, elem2, container) {
-    var roomsWords = window.util.getDeclinedWord(elem1, ['комната', 'комнаты', 'комнат']);
-    var guestsWords = window.util.getDeclinedWord(elem2, ['гостя', 'гостей', 'гостей']);
     if (hideIfNull((elem1 && elem2), container)) {
       if (elem1 > 0 || elem2 > 0) {
+        var roomsWords = window.util.getDeclinedWord(elem1, ['комната', 'комнаты', 'комнат']);
+        var guestsWords = window.util.getDeclinedWord(elem2, ['гостя', 'гостей', 'гостей']);
         container.textContent = elem1 + ' ' + roomsWords + ' для ' + elem2 + ' ' + guestsWords;
       } else {
         container.textContent = 'Не для гостей';
