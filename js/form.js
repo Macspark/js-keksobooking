@@ -100,14 +100,16 @@
   };
 
   var resetPhotos = function () {
-    var photos = document.querySelectorAll('.ad-form__photo');
-    photos.forEach(function (elem) {
-      adPhotosContainer.removeChild(elem);
-    });
-    var emptyFrame = document.createElement('div');
-    emptyFrame.classList.add('ad-form__photo');
-    adPhotosContainer.appendChild(emptyFrame);
-    isFirstPhotoUploaded = false;
+    if (isFirstPhotoUploaded) {
+      var photos = document.querySelectorAll('.ad-form__photo');
+      photos.forEach(function (elem) {
+        adPhotosContainer.removeChild(elem);
+      });
+      var emptyFrame = document.createElement('div');
+      emptyFrame.classList.add('ad-form__photo');
+      adPhotosContainer.appendChild(emptyFrame);
+      isFirstPhotoUploaded = false;
+    }
   };
 
   var resetForm = function () {
