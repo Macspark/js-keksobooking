@@ -29,6 +29,10 @@
     }
   };
 
+  var getCheckedFeatures = function () {
+    return filterFeatures.querySelectorAll('input:checked');
+  };
+
   var isOfferStringCorrect = function (offerProperty, filterOption) {
     return (filterOption === 'any' || offerProperty === filterOption);
   };
@@ -71,13 +75,12 @@
       price: filterPrice.value,
       rooms: filterRooms.value,
       guests: filterGuests.value,
-      features: filterFeatures.querySelectorAll('input:checked')
+      features: getCheckedFeatures()
     };
 
     var filteredOffers = filterOffers(offersList, filterOptions);
 
-    window.map.removeCard();
-    window.map.removePins();
+    window.map.clear();
     window.pins.create(filteredOffers, pinsContainer);
   });
 
@@ -86,7 +89,7 @@
     filterPrice.selectedIndex = 0;
     filterRooms.selectedIndex = 0;
     filterGuests.selectedIndex = 0;
-    filterFeatures.querySelectorAll('input:checked').forEach(function (elem) {
+    getCheckedFeatures().forEach(function (elem) {
       elem.checked = false;
     });
   };
@@ -95,22 +98,14 @@
     filterContainer.classList.add('map__filters--disabled');
     window.util.disableElements(filterSelects);
     window.util.disableElements(filterInputs);
-    filterType.removeEventListener('change', updateFilter);
-    filterPrice.removeEventListener('change', updateFilter);
-    filterRooms.removeEventListener('change', updateFilter);
-    filterGuests.removeEventListener('change', updateFilter);
-    filterFeatures.removeEventListener('change', updateFilter);
+    filterContainer.removeEventListener('change', updateFilter);
   };
 
   var unlockFilter = function () {
     filterContainer.classList.remove('map__filters--disabled');
     window.util.enableElements(filterSelects);
     window.util.enableElements(filterInputs);
-    filterType.addEventListener('change', updateFilter);
-    filterPrice.addEventListener('change', updateFilter);
-    filterRooms.addEventListener('change', updateFilter);
-    filterGuests.addEventListener('change', updateFilter);
-    filterFeatures.addEventListener('change', updateFilter);
+    filterContainer.addEventListener('change', updateFilter);
   };
 
   var initializeFilter = function (offers, container) {

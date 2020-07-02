@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var cardTemplate = document.querySelector('#card').content.querySelector('article');
   var offerTypeMap = {
     'bungalo': 'Бунгало',
     'flat': 'Квартира',
@@ -8,8 +9,8 @@
     'palace': 'Дворец'
   };
 
-  var isElementFilled = function (elem, container) {
-    if (!elem) {
+  var hideIfNull = function (elem, container) {
+    if (elem === undefined || elem === null || elem.length === 0) {
       container.classList.add('hidden');
       return false;
     }
@@ -17,70 +18,70 @@
   };
 
   var transformSimpleText = function (elem, container) {
-    if (isElementFilled(elem, container)) {
+    if (hideIfNull(elem, container)) {
       container.textContent = elem;
     }
   };
 
   var transformPrice = function (elem, container) {
-    if (isElementFilled(elem, container)) {
+    if (hideIfNull(elem, container)) {
       container.textContent = elem + '₽/ночь';
     }
   };
 
   var transformType = function (elem, container) {
-    if (isElementFilled(elem, container)) {
+    if (hideIfNull(elem, container)) {
       container.textContent = offerTypeMap[elem];
     }
   };
 
   var transformCapacity = function (elem1, elem2, container) {
-    if (isElementFilled((elem1 && elem2), container)) {
-      container.textContent = elem1 + ' ' + window.util.getDeclinedWord(elem1, ['комната', 'комнаты', 'комнат']) + ' для ' + elem2 + ' ' + window.util.getDeclinedWord(elem2, ['гостя', 'гостей', 'гостей']);
+    var roomsWords = window.util.getDeclinedWord(elem1, ['комната', 'комнаты', 'комнат']);
+    var guestsWords = window.util.getDeclinedWord(elem2, ['гостя', 'гостей', 'гостей']);
+    if (hideIfNull((elem1 && elem2), container)) {
+      if (elem1 > 0 || elem2 > 0) {
+        container.textContent = elem1 + ' ' + roomsWords + ' для ' + elem2 + ' ' + guestsWords;
+      } else {
+        container.textContent = 'Не для гостей';
+      }
     }
   };
 
   var transformTime = function (elem1, elem2, container) {
-    if (isElementFilled((elem1 && elem2), container)) {
+    if (hideIfNull((elem1 && elem2), container)) {
       container.textContent = 'Заезд после ' + elem1 + ', выезд до ' + elem2;
     }
   };
 
   var transformFeatures = function (elem, card, container) {
-    if (isElementFilled(elem, container)) {
-      var features = card.querySelectorAll('.popup__feature');
-
-      features.forEach(function (e) {
-        e.classList.add('hidden');
-      });
-
-      elem.forEach(function (e) {
-        card.querySelector('.popup__feature--' + e).classList.remove('hidden');
+    if (hideIfNull(elem, container)) {
+      elem.forEach(function (checkedFeature) {
+        var feature = card.querySelector('.popup__feature--' + checkedFeature);
+        feature.classList.remove('hidden');
       });
     }
   };
 
   var transformPhotos = function (elem, card, container) {
-    if (isElementFilled(elem, container)) {
-      var popupPhoto = card.querySelector('.popup__photo');
-      popupPhoto.classList.add('hidden');
+    if (hideIfNull(elem, container)) {
+      var photoTemplate = card.querySelector('.popup__photo');
       elem.forEach(function (e) {
-        var photo = popupPhoto.cloneNode(true);
+        var photo = photoTemplate.cloneNode(true);
         photo.src = e;
         photo.classList.remove('hidden');
         container.appendChild(photo);
       });
+      container.removeChild(photoTemplate);
     }
   };
 
   var transformAvatar = function (elem, container) {
-    if (isElementFilled(elem, container)) {
+    if (hideIfNull(elem, container)) {
       container.src = elem;
     }
   };
 
   var generateCard = function (elem) {
-    var cardTemplate = document.querySelector('#card').content.querySelector('article');
     var cardFragment = document.createDocumentFragment();
     var card = cardTemplate.cloneNode(true);
 

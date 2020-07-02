@@ -4,7 +4,7 @@
   var LOAD_PATH = 'keksobooking/data';
   var MAIN_PIN_OFFSET_X = 32;
   var MAIN_PIN_OFFSET_Y = 80;
-  var MAP_SIZE = {
+  var MapSize = {
     MIN_X: 0,
     MAX_X: 1200,
     MIN_Y: 130,
@@ -69,11 +69,12 @@
   };
 
   var removeCard = function () {
-    var card = document.querySelector('.map .popup');
+    var card = map.querySelector('.popup');
     if (card) {
       document.removeEventListener('keydown', onEscDown);
       map.removeChild(card);
     }
+    window.pins.removeActiveClass();
   };
 
   var onEnterDown = function (evt) {
@@ -146,11 +147,11 @@
           y: (mapMainPin.offsetTop - shift.y)
         };
 
-        if (finalCoords.x >= (MAP_SIZE.MIN_X - MAIN_PIN_OFFSET_X) && finalCoords.x <= (MAP_SIZE.MAX_X - MAIN_PIN_OFFSET_X)) {
+        if (finalCoords.x >= (MapSize.MIN_X - MAIN_PIN_OFFSET_X) && finalCoords.x <= (MapSize.MAX_X - MAIN_PIN_OFFSET_X)) {
           mapMainPin.style.left = finalCoords.x + 'px';
         }
 
-        if (finalCoords.y >= (MAP_SIZE.MIN_Y - MAIN_PIN_OFFSET_Y) && finalCoords.y <= (MAP_SIZE.MAX_Y - MAIN_PIN_OFFSET_Y)) {
+        if (finalCoords.y >= (MapSize.MIN_Y - MAIN_PIN_OFFSET_Y) && finalCoords.y <= (MapSize.MAX_Y - MAIN_PIN_OFFSET_Y)) {
           mapMainPin.style.top = finalCoords.y + 'px';
         }
         window.form.setAddress();
@@ -175,17 +176,22 @@
   };
 
   var resetMap = function () {
-    removePins();
+    clearMap();
     mapMainPin.style.left = mapMainPinDefaultPosition.x;
     mapMainPin.style.top = mapMainPinDefaultPosition.y;
-    removeCard();
     lockMap();
+  };
+
+  var clearMap = function () {
+    removePins();
+    removeCard();
   };
 
   lockMap();
 
   window.map = {
     reset: resetMap,
+    clear: clearMap,
     isMapFaded: isMapFaded,
     getMainPinCoordinates: getMainPinCoordinates,
     drawCard: drawCard,

@@ -106,12 +106,6 @@
     lockForm();
   };
 
-  var resetPage = function () {
-    window.map.reset();
-    window.filter.reset();
-    resetForm();
-  };
-
   adType.addEventListener('change', function () {
     compareTypeAndPrice();
   });
@@ -166,14 +160,14 @@
 
   adReset.addEventListener('click', function (evt) {
     evt.preventDefault();
-    resetPage();
+    window.page.reset();
   });
 
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
 
     var onSuccess = function () {
-      resetPage();
+      window.page.reset();
       window.popup.success();
     };
 
@@ -194,6 +188,7 @@
 
   window.form = {
     unlock: unlockForm,
+    reset: resetForm,
     setAddress: setAddress,
     compareRooms: compareRoomsAndGuests,
   };

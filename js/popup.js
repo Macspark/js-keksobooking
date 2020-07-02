@@ -17,10 +17,9 @@
     main.appendChild(fragment);
 
     var closePopup = function () {
-      var realPopup = document.querySelector('main .' + tag);
       document.removeEventListener('keydown', onEscDown);
       document.removeEventListener('mousedown', onMouseDownOutside);
-      main.removeChild(realPopup);
+      main.removeChild(popup);
     };
 
     var onMouseDownOutside = function (mouseDownEvt) {

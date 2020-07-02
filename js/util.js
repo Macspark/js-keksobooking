@@ -1,14 +1,6 @@
 'use strict';
 
 (function () {
-  var getRandomNumber = function (min, max) {
-    return Math.floor(min + Math.random() * (max + 1 - min));
-  };
-
-  var getRandomElement = function (arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-  };
-
   var getDeclinedWord = function (n, words) {
     n = Math.abs(n) % 100;
     var n1 = n % 10;
@@ -22,18 +14,6 @@
       default:
         return words[2];
     }
-  };
-
-  var getRandomizedArray = function (list, min) {
-    var tempArr = list.slice();
-    var randomArr = [];
-    var arrLength = window.util.getRandomNumber(min, tempArr.length);
-    for (var i = 0; i < arrLength; i++) {
-      var randomElem = window.util.getRandomElement(tempArr);
-      randomArr.push(randomElem);
-      tempArr.splice(tempArr.indexOf(randomElem), 1);
-    }
-    return randomArr;
   };
 
   var disableElements = function (elem) {
@@ -51,9 +31,6 @@
   window.util = {
     disableElements: disableElements,
     enableElements: enableElements,
-    getRandomNumber: getRandomNumber,
-    getRandomElement: getRandomElement,
     getDeclinedWord: getDeclinedWord,
-    getRandomizedArray: getRandomizedArray
   };
 })();
