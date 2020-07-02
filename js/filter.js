@@ -2,6 +2,16 @@
 
 (function () {
   var MAX_OFFERS = 5;
+  var PriceRange = {
+    LOW: 'low',
+    MIDDLE: 'middle',
+    HIGH: 'high'
+  };
+  var PriceList = {
+    LOW: 10000,
+    HIGH: 50000
+  };
+  var ANY_VALUE = 'any';
 
   var offersList = [];
   var pinsContainer;
@@ -18,14 +28,14 @@
 
   var getPriceNameRange = function (price) {
     switch (true) {
-      case (price < 10000):
-        return 'low';
-      case (price >= 10000 && price < 50000):
-        return 'middle';
-      case (price >= 50000):
-        return 'high';
+      case (price < PriceList.LOW):
+        return PriceRange.LOW;
+      case (price >= PriceList.LOW && price < PriceList.HIGH):
+        return PriceRange.MIDDLE;
+      case (price >= PriceList.HIGH):
+        return PriceRange.HIGH;
       default:
-        return 'any';
+        return ANY_VALUE;
     }
   };
 
@@ -34,11 +44,11 @@
   };
 
   var isOfferStringCorrect = function (offerProperty, filterOption) {
-    return (filterOption === 'any' || offerProperty === filterOption);
+    return (filterOption === ANY_VALUE || offerProperty === filterOption);
   };
 
   var isOfferIntCorrect = function (offerProperty, filterOption) {
-    return (filterOption === 'any' || offerProperty === parseInt(filterOption, 10));
+    return (filterOption === ANY_VALUE || offerProperty === parseInt(filterOption, 10));
   };
 
   var areOfferFeaturesCorrect = function (offerFeatures, checkedFeatures) {

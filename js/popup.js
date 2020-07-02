@@ -29,7 +29,7 @@
     };
 
     var onEscDown = function (escDownEvt) {
-      if (escDownEvt.key === 'Escape') {
+      if (window.util.isEsc(escDownEvt.key)) {
         closePopup();
       }
     };

@@ -58,7 +58,7 @@
   };
 
   var onEscDown = function (evt) {
-    if (evt.key === 'Escape') {
+    if (window.util.isEsc(evt.key)) {
       removeCard();
     }
   };
@@ -78,7 +78,7 @@
   };
 
   var onEnterDown = function (evt) {
-    if (evt.key === 'Enter') {
+    if (window.util.isEsc(evt.key)) {
       setActiveState();
     }
   };

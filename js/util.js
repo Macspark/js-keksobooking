@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var ESCAPE_BUTTON = 'Escape';
+
   var getDeclinedWord = function (n, words) {
     n = Math.abs(n) % 100;
     var n1 = n % 10;
@@ -28,9 +30,14 @@
     });
   };
 
+  var isEsc = function (key) {
+    return key === ESCAPE_BUTTON ? true : false;
+  };
+
   window.util = {
     disableElements: disableElements,
     enableElements: enableElements,
     getDeclinedWord: getDeclinedWord,
+    isEsc: isEsc
   };
 })();

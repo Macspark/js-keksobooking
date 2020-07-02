@@ -2,6 +2,13 @@
 
 (function () {
   var UPLOAD_PATH = 'keksobooking';
+  var PriceList = {
+    BUNGALO: 0,
+    FLAT: 1000,
+    HOUSE: 5000,
+    PALACE: 25000
+  };
+  var PRICE_PLACEHOLDER_MULTIPLIER = 5;
 
   var adForm = document.querySelector('.ad-form');
   var adFormFieldsets = document.querySelectorAll('.ad-form fieldset');
@@ -19,6 +26,7 @@
 
   var adAvatarInput = document.querySelector('.ad-form__field input[type=file]');
   var adAvatarImg = document.querySelector('.ad-form-header__preview img');
+  var adDefaultAvatar = adAvatarImg.src;
 
   var adPhotosInput = document.querySelector('.ad-form__input');
   var adPhotosContainer = document.querySelector('.ad-form__photo-container');
@@ -72,23 +80,34 @@
     var price;
     switch (adType.value) {
       case 'bungalo':
-        price = 0;
+        price = PriceList.BUNGALO;
         break;
       case 'flat':
-        price = 1000;
+        price = PriceList.FLAT;
         break;
       case 'house':
-        price = 5000;
+        price = PriceList.HOUSE;
         break;
       case 'palace':
-        price = 10000;
+        price = PriceList.PALACE;
         break;
       default:
-        price = 1000;
+        price = PriceList.FLAT;
         break;
     }
     adPrice.min = price;
-    adPrice.placeholder = price * 5;
+    adPrice.placeholder = price * PRICE_PLACEHOLDER_MULTIPLIER;
+  };
+
+  var resetPhotos = function () {
+    var photos = document.querySelectorAll('.ad-form__photo');
+    photos.forEach(function (elem) {
+      adPhotosContainer.removeChild(elem);
+    });
+    var emptyFrame = document.createElement('div');
+    emptyFrame.classList.add('ad-form__photo');
+    adPhotosContainer.appendChild(emptyFrame);
+    isFirstPhotoUploaded = false;
   };
 
   var resetForm = function () {
@@ -103,6 +122,8 @@
     adFeatures.forEach(function (elem) {
       elem.checked = false;
     });
+    adAvatarImg.src = adDefaultAvatar;
+    resetPhotos();
     lockForm();
   };
 
