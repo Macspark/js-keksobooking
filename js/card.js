@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var HIDDEN_CLASS = 'hidden';
   var cardTemplate = document.querySelector('#card').content.querySelector('article');
   var offerTypeMap = {
     'bungalo': 'Бунгало',
@@ -9,31 +10,38 @@
     'palace': 'Дворец'
   };
 
-  var hideIfNull = function (elem, container) {
-    container.classList.toggle('hidden', (elem === undefined || elem === null || elem.length === 0));
-    return !(container.classList.contains('hidden'));
+  var isElementEmpty = function (elem) {
+    return (elem === undefined || elem === null || elem.length === 0);
+  };
+
+  var hideEmptyElement = function (elem, container) {
+    container.classList.toggle(HIDDEN_CLASS, isElementEmpty(elem));
   };
 
   var transformSimpleText = function (elem, container) {
-    if (hideIfNull(elem, container)) {
+    hideEmptyElement(elem, container);
+    if (!container.classList.contains(HIDDEN_CLASS)) {
       container.textContent = elem;
     }
   };
 
   var transformPrice = function (elem, container) {
-    if (hideIfNull(elem, container)) {
+    hideEmptyElement(elem, container);
+    if (!container.classList.contains(HIDDEN_CLASS)) {
       container.textContent = elem + '₽/ночь';
     }
   };
 
   var transformType = function (elem, container) {
-    if (hideIfNull(elem, container)) {
+    hideEmptyElement(elem, container);
+    if (!container.classList.contains(HIDDEN_CLASS)) {
       container.textContent = offerTypeMap[elem];
     }
   };
 
   var transformCapacity = function (elem1, elem2, container) {
-    if (hideIfNull((elem1 && elem2), container)) {
+    hideEmptyElement((elem1 && elem2), container);
+    if (!container.classList.contains(HIDDEN_CLASS)) {
       if (elem1 > 0 || elem2 > 0) {
         container.textContent = elem1 + ' комнаты для ' + elem2 + ' гостей';
       } else {
@@ -43,13 +51,15 @@
   };
 
   var transformTime = function (elem1, elem2, container) {
-    if (hideIfNull((elem1 && elem2), container)) {
+    hideEmptyElement((elem1 && elem2), container);
+    if (!container.classList.contains(HIDDEN_CLASS)) {
       container.textContent = 'Заезд после ' + elem1 + ', выезд до ' + elem2;
     }
   };
 
   var transformFeatures = function (elem, card, container) {
-    if (hideIfNull(elem, container)) {
+    hideEmptyElement(elem, container);
+    if (!container.classList.contains(HIDDEN_CLASS)) {
       elem.forEach(function (checkedFeature) {
         var feature = card.querySelector('.popup__feature--' + checkedFeature);
         feature.classList.remove('hidden');
@@ -58,7 +68,8 @@
   };
 
   var transformPhotos = function (elem, card, container) {
-    if (hideIfNull(elem, container)) {
+    hideEmptyElement(elem, container);
+    if (!container.classList.contains(HIDDEN_CLASS)) {
       var photoTemplate = card.querySelector('.popup__photo');
       elem.forEach(function (e) {
         var photo = photoTemplate.cloneNode(true);
@@ -71,7 +82,8 @@
   };
 
   var transformAvatar = function (elem, container) {
-    if (hideIfNull(elem, container)) {
+    hideEmptyElement(elem, container);
+    if (!container.classList.contains(HIDDEN_CLASS)) {
       container.src = elem;
     }
   };
