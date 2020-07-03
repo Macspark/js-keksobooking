@@ -10,11 +10,8 @@
   };
 
   var hideIfNull = function (elem, container) {
-    if (elem === undefined || elem === null || elem.length === 0) {
-      container.classList.add('hidden');
-      return false;
-    }
-    return true;
+    container.classList.toggle('hidden', (elem === undefined || elem === null || elem.length === 0));
+    return !(container.classList.contains('hidden'));
   };
 
   var transformSimpleText = function (elem, container) {
