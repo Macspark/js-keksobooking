@@ -17,14 +17,15 @@
   var pinsContainer;
 
   var filterContainer = document.querySelector('.map__filters');
-  var filterSelects = document.querySelectorAll('.map__filters select');
-  var filterInputs = document.querySelectorAll('.map__filters input');
 
-  var filterType = document.querySelector('#housing-type');
-  var filterPrice = document.querySelector('#housing-price');
-  var filterRooms = document.querySelector('#housing-rooms');
-  var filterGuests = document.querySelector('#housing-guests');
-  var filterFeatures = document.querySelector('#housing-features');
+  var filterSelects = filterContainer.querySelectorAll('select');
+  var filterInputs = filterContainer.querySelectorAll('input');
+
+  var filterType = filterContainer.querySelector('#housing-type');
+  var filterPrice = filterContainer.querySelector('#housing-price');
+  var filterRooms = filterContainer.querySelector('#housing-rooms');
+  var filterGuests = filterContainer.querySelector('#housing-guests');
+  var filterFeatures = filterContainer.querySelector('#housing-features');
 
   var getPriceNameRange = function (price) {
     switch (true) {

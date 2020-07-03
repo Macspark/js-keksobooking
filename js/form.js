@@ -11,25 +11,26 @@
   var PRICE_PLACEHOLDER_MULTIPLIER = 5;
 
   var adForm = document.querySelector('.ad-form');
-  var adFormFieldsets = document.querySelectorAll('.ad-form fieldset');
+  var adFormFieldsets = adForm.querySelectorAll('fieldset');
 
-  var adTitle = document.querySelector('#title');
-  var adPrice = document.querySelector('#price');
-  var adType = document.querySelector('#type');
-  var adTimein = document.querySelector('#timein');
-  var adTimeout = document.querySelector('#timeout');
-  var adRooms = document.querySelector('#room_number');
-  var adGuests = document.querySelector('#capacity');
-  var adAddress = document.querySelector('#address');
-  var adDescription = document.querySelector('#description');
-  var adFeatures = document.querySelectorAll('.ad-form .feature__checkbox');
+  var adTitle = adForm.querySelector('#title');
+  var adPrice = adForm.querySelector('#price');
+  var adType = adForm.querySelector('#type');
+  var adTimein = adForm.querySelector('#timein');
+  var adTimeout = adForm.querySelector('#timeout');
+  var adRooms = adForm.querySelector('#room_number');
+  var adGuests = adForm.querySelector('#capacity');
+  var adAddress = adForm.querySelector('#address');
+  var adDescription = adForm.querySelector('#description');
+  var adFeatures = adForm.querySelectorAll('.feature__checkbox');
+  var adReset = adForm.querySelector('.ad-form__reset');
 
-  var adAvatarInput = document.querySelector('.ad-form__field input[type=file]');
-  var adAvatarImg = document.querySelector('.ad-form-header__preview img');
+  var adAvatarInput = adForm.querySelector('#avatar');
+  var adAvatarImg = adForm.querySelector('.ad-form-header__preview img');
   var adDefaultAvatar = adAvatarImg.src;
 
-  var adPhotosInput = document.querySelector('.ad-form__input');
-  var adPhotosContainer = document.querySelector('.ad-form__photo-container');
+  var adPhotosInput = adForm.querySelector('#images');
+  var adPhotosContainer = adForm.querySelector('.ad-form__photo-container');
   var isFirstPhotoUploaded = false;
 
   var adTypeDefault = adType.value;
@@ -38,7 +39,6 @@
   var adRoomsDefault = adRooms.value;
   var adGuestsDefault = adGuests.value;
 
-  var adReset = document.querySelector('.ad-form__reset');
 
   var setAddress = function () {
     var coordinates = window.map.getMainPinCoordinates();
