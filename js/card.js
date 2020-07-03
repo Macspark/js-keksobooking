@@ -18,30 +18,34 @@
     container.classList.toggle(HIDDEN_CLASS, isElementEmpty(elem));
   };
 
+  var isContainerVisible = function (container) {
+    return !(container.classList.contains(HIDDEN_CLASS));
+  };
+
   var transformSimpleText = function (elem, container) {
     hideEmptyElement(elem, container);
-    if (!container.classList.contains(HIDDEN_CLASS)) {
+    if (isContainerVisible(container)) {
       container.textContent = elem;
     }
   };
 
   var transformPrice = function (elem, container) {
     hideEmptyElement(elem, container);
-    if (!container.classList.contains(HIDDEN_CLASS)) {
+    if (isContainerVisible(container)) {
       container.textContent = elem + '₽/ночь';
     }
   };
 
   var transformType = function (elem, container) {
     hideEmptyElement(elem, container);
-    if (!container.classList.contains(HIDDEN_CLASS)) {
+    if (isContainerVisible(container)) {
       container.textContent = offerTypeMap[elem];
     }
   };
 
   var transformCapacity = function (elem1, elem2, container) {
     hideEmptyElement((elem1 && elem2), container);
-    if (!container.classList.contains(HIDDEN_CLASS)) {
+    if (isContainerVisible(container)) {
       if (elem1 > 0 || elem2 > 0) {
         container.textContent = elem1 + ' комнаты для ' + elem2 + ' гостей';
       } else {
@@ -52,14 +56,14 @@
 
   var transformTime = function (elem1, elem2, container) {
     hideEmptyElement((elem1 && elem2), container);
-    if (!container.classList.contains(HIDDEN_CLASS)) {
+    if (isContainerVisible(container)) {
       container.textContent = 'Заезд после ' + elem1 + ', выезд до ' + elem2;
     }
   };
 
   var transformFeatures = function (elem, card, container) {
     hideEmptyElement(elem, container);
-    if (!container.classList.contains(HIDDEN_CLASS)) {
+    if (isContainerVisible(container)) {
       elem.forEach(function (checkedFeature) {
         var feature = card.querySelector('.popup__feature--' + checkedFeature);
         feature.classList.remove('hidden');
@@ -69,7 +73,7 @@
 
   var transformPhotos = function (elem, card, container) {
     hideEmptyElement(elem, container);
-    if (!container.classList.contains(HIDDEN_CLASS)) {
+    if (isContainerVisible(container)) {
       var photoTemplate = card.querySelector('.popup__photo');
       elem.forEach(function (e) {
         var photo = photoTemplate.cloneNode(true);
@@ -83,7 +87,7 @@
 
   var transformAvatar = function (elem, container) {
     hideEmptyElement(elem, container);
-    if (!container.classList.contains(HIDDEN_CLASS)) {
+    if (isContainerVisible(container)) {
       container.src = elem;
     }
   };
