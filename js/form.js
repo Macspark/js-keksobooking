@@ -10,6 +10,8 @@
   };
   var PRICE_PLACEHOLDER_MULTIPLIER = 5;
 
+  var MAX_ROOMS = '100';
+
   var adForm = document.querySelector('.ad-form');
   var adFormFieldsets = adForm.querySelectorAll('fieldset');
 
@@ -39,7 +41,6 @@
   var adRoomsDefault = adRooms.value;
   var adGuestsDefault = adGuests.value;
 
-
   var setAddress = function () {
     var coordinates = window.map.getMainPinCoordinates();
     adAddress.value = coordinates.x + ', ' + coordinates.y;
@@ -47,13 +48,13 @@
 
   var compareRoomsAndGuests = function () {
     switch (true) {
-      case (adRooms.value === '100' && adGuests.value !== '0'):
+      case (adRooms.value === MAX_ROOMS && adGuests.value !== '0'):
         adGuests.setCustomValidity('Указанное количество комнат не для гостей');
         break;
       case (adRooms.value < adGuests.value):
         adGuests.setCustomValidity('Для текущего количества комнат гостей может быть не больше ' + adRooms.value);
         break;
-      case (adRooms.value !== '100' && adGuests.value === '0'):
+      case (adRooms.value !== MAX_ROOMS && adGuests.value === '0'):
         adGuests.setCustomValidity('Текущее количество комнат подразумевает минимум 1 гостя');
         break;
       default:
