@@ -47,7 +47,9 @@
     hideEmptyElement((elem1 && elem2), container);
     if (isContainerVisible(container)) {
       if (elem1 > 0 || elem2 > 0) {
-        container.textContent = elem1 + ' комнаты для ' + elem2 + ' гостей';
+        var roomsWords = window.util.getDeclinedWord(elem1, ['комната', 'комнаты', 'комнат']);
+        var guestsWords = window.util.getDeclinedWord(elem2, ['гостя', 'гостей', 'гостей']);
+        container.textContent = elem1 + ' ' + roomsWords + ' для ' + elem2 + ' ' + guestsWords;
       } else {
         container.textContent = 'Не для гостей';
       }
